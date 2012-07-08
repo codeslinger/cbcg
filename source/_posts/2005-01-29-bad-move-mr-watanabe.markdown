@@ -1,0 +1,11 @@
+--- 
+title: Bad move, Mr. Watanabe
+layout: post
+---
+The Mr. Watanabe I am referring to is the author of NewsFire, a Mac OS X RSS reader. The bad move that he has made is switching his software to a shareware model, where it was previously freeware. I just switched back to [NetNewsWire Lite](http://ranchero.com/netnewswire/) this morning after finding out.
+
+Now, I don't have a problem with the guy making money from software; this is, in fact, how I make my own living. My issue is with the fact that there was never any notification that NewsFire might become shareware (i.e. for-pay). However, this increasingly common trick of publishing freeware that suddenly becomes shareware after there is a large-enough user base is not very endearing.
+
+A more honest approach would be to make it shareware from day one and just increase the trial length in an effort to "hook" that potential revenue. Also, a software could have two versions: one full-featured version that is shareware or just plain costs money and another, partially-featured version that costs nothing. This enables users to become familiar with your product and decide on their own schedule whether or not its worth it for them to buy the full-featured version. This is what Ranchero does with their NetNewsWire product to good effect. I, as a software consumer, know that NNW Lite will be free to use, if somewhat limited in functionality. If I should need to edit blog posts from inside my reader or get other advanced functionality, I'll pay for regular NNW. In fact, I'm using a shareware blog editor to write this very post! But, the important point is that I'm using it because *it never claimed to be anything other than shareware*.
+
+Like I said, I don't mind paying for software or having an author charge for their hard work in creating quality software. I do have a problem with what appears to be dishonesty. This trick is loathed when big corporations do it, but it seems that people are much more willing to let it go from small-time operations like Mr. Watanabe. At any rate, I'll definitely be very wary of using another piece of "freeware" from Mr. Watanabe, now that I know what could happen after I get comfortable with it...

@@ -1,0 +1,19 @@
+--- 
+title: The Kid Nephew Theory of Software Production
+layout: post
+---
+I've built some software. In doing so, I think I've come to a realization about why building software is so hard and so much of it is crapola. A little thought exercise is in order to illustrate my theory.
+
+Imagine you want to draw a picture of something. Something big and elaborate, like a cathedral or the [Cisco IOS](http://en.wikipedia.org/wiki/Cisco_IOS) upgrade chart. But you can't draw the picture because you can't draw or you can't draw it fast enough or whatever. So, you get your nephew to draw it for you. Sometimes, your nephew is an art prodigy and it comes out better than you imagined. More often, it comes out looking like your kid nephew drew it. Either way, its different than what you had in your mind.
+
+This situation mirrors a lot of software production today. A client or manager or even just some guy on the Internet wants to build a piece of software to do something. But he needs help getting it done. So he gets people to help him. Unfortunately, no matter how eloquent he may be, he often cannot express the true breadth and depth of his vision and so others don't share it enough to complete the originally envisioned product. Every so often it comes out as good or better than the original vision, but a lot of times it comes out looking like shit. 
+
+Example: What do you think was the vision behind what became of Microsoft Outlook? If you were imagining a really awesome [PIM](http://en.wikipedia.org/wiki/Personal_information_manager), is that what you'd think of? I'd be more inclined to think of Gmail currently, but if I was letting my imagination run wild, I bet it would look a lot like what [Remail](http://www.research.ibm.com/remail/) was supposed to be.
+
+I think this is also why it seems as if the best pieces of software come out of the "scratching the itch" methodology of software engineering, usually by a small group of people (seems like its mostly just one guy) just banging it out from the vision in their heads and throwing it out into the open for all to see and use. 
+
+Both [patch](http://www.gnu.org/software/patch/patch.html) and [Perl](http://en.wikipedia.org/wiki/Perl) essentially came from one man and they are both long-lasting, beautiful tools that enabled ways of working that far outstripped their creator's dreams. Some of that was Open Source at work, of course, but a lot of that was [Larry](http://www.wall.org/~larry/) just getting his vision out and letting others take a look at it, unadulterated by foreign hands.
+
+We've all seen what happens when software is designed from the beginning by committee, even if that committee is founded by a guy with strong vision. If you need a recent, pertinent example of that, check out [Dreaming in Code](http://www.dreamingincode.com) for the story of what happened to the [Chandler](http://www.osafoundation.org/) project. I'll bet that if Kapor had had the ability and intent to complete Chandler by himself or with just one or two other closely connected people, it would have worked out a whole lot better. I'm told that what makes Apple's products so good is that Jobs never leaves the process alone and reinforces his vision constantly along the way to completion.
+
+This brings me to my point: producing software is art that just happens to have as its brushstrokes the principles of computer science. And art is always better when it comes from a small group of focused, passionate people with a shared vision.

@@ -1,0 +1,544 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Idiomatic Ruby</title>
+	<!-- metadata -->
+	<meta name="generator" content="S5" />
+	<meta name="version" content="S5 1.1" />
+	<meta name="presdate" content="20051206" />
+	<meta name="author" content="Toby DiPasquale" />
+	<meta name="company" content="Cipher Block Chain Gang" />
+	<!-- configuration parameters -->
+	<meta name="defaultView" content="slideshow" />
+	<meta name="controlVis" content="hidden" />
+	<!-- style sheet links -->
+	<link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+	<link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+	<link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+	<link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+	<!-- S5 JS -->
+	<script src="ui/default/slides.js" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="layout">
+	<div id="controls"><!-- DO NOT EDIT --></div>
+	<div id="currentSlide"><!-- DO NOT EDIT --></div>
+	<div id="header"></div>
+	<div id="footer">
+		<h1>Philly on Rails (2005.12.06)</h1>
+		<h2>Idiomatic Ruby</h2>
+	</div>
+</div>
+
+<div class="presentation">
+
+	<div class="slide">
+		<h1>"Idiotic Ruby".sub( /ot/, 'omat')</h1>
+		<h3>Toby DiPasquale</h3>
+		<h4><a href="http://cbcg.net/">Cipher Block Chain Gang</a></h4>
+	</div>
+
+	<div class="slide">
+		<h1>Why Learn Ruby?</h1>
+		<ul class="incremental">
+		<li>Ruby is easy to read</li>
+		<li>Completely object-oriented</li>
+		<li>Ruby tries to follow POLS (Principle of Least Surprise)</li>
+		<li>Ruby has a REPL (Read-Eval-Print Loop), which makes prototyping very fast</li>
+		<li>Brings you close to power of LISP without all the parentheses</li>
+		<li>Bruce Tate thinks Ruby is the next big language (with Rails driving initial adoption)</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Conventions</h1>
+		<ul>
+		<li><code>p</code> prints human-readable representation of object</li>
+		<li><code>pp</code> does the same thing, but nicer format</li>
+		<li><code># -&gt; val</code> indicates that <code>val</code> is the output of the preceding statement</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Told you it was easy to read...</h1>
+		<ul>
+		<li><code>unless</code> works like <code>if not</code></li><br/>
+		<pre>
+abort unless str.include? "Barracus"
+		</pre>
+		<li><code>until</code> works like <code>while not</code></li><br/>
+		<pre>
+x = x * 2 until x &gt; 100
+		</pre>
+		<li>Want to swap two values?</li><br/>
+		<pre>
+x, y = y, x
+		</pre>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Common Globals</h1>
+		<ul>
+		<li><code>__FILE__</code> is the name of the current source file</li>
+		<li><code>$0</code> at the top level is the name of the top-level program being executed</li><br/>
+		<pre>
+if __FILE__ == $0
+  # ...
+end
+		</pre>
+		<li><code>$:</code> is an array of paths to look for Ruby scripts to load</li>
+		<li><code>$!</code> is the current Exception passed to <code>raise</code></li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Common Globals (cont)</h1>
+		<ul>
+		<li><code>$SAFE</code> is the current safe level (used to sandbox code)</li>
+		<li><code>ENV</code> is a Hash of environment variables</li>
+		<li><code>ARGV</code> is an Array of command-line args (synonym for <code>$*</code>)</li>
+		<li>If a variable called <code>SCRIPT_LINES__</code> is defined to be a Hash, it will be filled with the source of each file it parses (key is filename)</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Method Name Qualifiers</h1>
+		<ul>
+		<li>Methods ending in ? are predicates (Boolean queries)</li>
+		<pre>
+if File.readable? "/etc/password"
+  PasswordCracker.run "/etc/password"
+end
+		</pre>
+		<li>Methods ending in ! are dangerous, meaning that they modify the receiver</li>
+		<pre>
+str = "   hello world   "
+str.strip!
+p str   # -&gt; "hello world"
+		</pre>
+		<li>These qualifiers are optional but make code very readable</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>OR-equal Operator</h1>
+		<ul>
+		<li><code>||=</code> will only assign if the left-hand side is nil</li><br/>
+		<pre>
+s = ""
+# ...
+s ||= "hello"   # -&gt; ""
+		</pre>
+		<li>The following two lines are equivalent:</li><br/>
+		<pre>
+s ||= "hello"
+s = "hello" if s.nil?
+		</pre>
+		<li>I've been told that Perl has the same faculty</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Attributes (Instance Variables)</h1>
+		<ul>
+		<li>By default, object attributes can't be read or written to outside of the object</li>
+		<li>You can change the access on attributes with <code>attr_reader</code>, <code>attr_writer</code> and <code>attr_accessor</code></li>
+		<li>These are class methods that open the named attributes up to reading, writing or read/write, resp.</li>
+		<li>Ever write a Java Bean? Here's Ruby's:</li><br/>
+		<pre>
+class RubyBean
+  attr_accessor :name, :date, :location
+end
+		</pre>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Attributes (cont.)</h1>
+		<ul>
+		<li>You can create virtual attributes, as well</li><br/>
+		<pre>
+class RubyBean
+  attr_reader :name, :date, :location
+
+  def name=(str)
+    @name = str.capitalize
+  end
+end
+
+x = RubyBean.new
+x.name = "frank schlobatnik"
+p x.name   # -&gt; "Frank Schlobatnik"
+		</pre>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Exceptions</h1>
+		<ul>
+		<li>Catch exceptions with <code>begin</code> and <code>rescue</code></li><br/>
+		<pre>
+begin
+  File.open("/etc/passwd") do |f|
+    puts f.gets
+  end
+rescue =&gt; e
+  $stderr.puts "error: #{e.message}"
+end
+		</pre>
+		<li>The <code>=&gt;</code> puts the Exception object into variable <code>e</code></li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Exceptions (cont.)</h1>
+		<ul>
+		<li><code>ensure</code> makes sure code is called regardless of outcome</li><br/>
+		<pre>
+f = nil
+begin
+  f = File.open "/etc/passwd"
+  # ... process f here ...
+rescue =&gt; e
+  $stderr.puts "error: #{e.message}"
+ensure
+  f.close unless f.nil?
+end
+		</pre>
+		<li><code>f</code> is guaranteed to be closed when its over</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Exceptions (cont.)</h1>
+		<ul>
+		<li>Raise your own exceptions with <code>raise</code></li>
+		<li><code>raise</code> can be used with <code>String</code> or <code>Exception</code> objects</li><br/>
+		<pre>
+raise
+raise StandardError.new
+raise "failure to locate resource #A8FD01-9"
+		</pre>
+		<li><code>fail</code> is an alias for <code>raise</code>; they can be used interchangably</li>
+		<li>Some exceptions can't be caught unless explicitly asked for in <code>rescue</code> (check Pickaxe book for more info here)</li>
+		</ul>
+	</div>
+	
+	<div class="slide">
+		<h1>Optional Parameters</h1>
+		<ul>
+		<li>Parameters that, if not specified, take on some default value</li><br/>
+		<pre>
+def somemethod(x, y=nil)
+  return x * y unless y.nil?
+  x
+end
+		</pre>
+		<li>This prevents you from having to write multiple instances of the same method (DRY)</li>
+		</ul>
+	</div>
+	
+	<div class="slide">
+		<h1>Rest Parameters</h1>
+		<ul>
+		<li>Batches up extraneous parameters into an array</li><br/>
+		<pre>
+def substitute(re, str, *rest)
+  rest.each { |r| r.gsub( re, str) }
+end
+		</pre>
+		<li>Allows creation of methods that take variable numbers of arguments</li>
+		<li><code>printf</code> and family use this technique</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Keyword Parameters</h1>
+		<ul>
+		<li>Ruby doesn't have them! (yet)</li>
+		<li>But they can be emulated with a Hash (keys are Symbols)</li><br/>
+		<pre>
+def method(req, opt={})
+  # look for keyword args in opt hash
+end</pre>
+		<li>Old calls to method don't need to know or care about new keyword parameters</li>
+		<li>Must make sure updated method doesn't handle old parameters differently</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Regular Expressions</h1>
+		<ul>
+		<li>Ruby has first-class support for regexps</li>
+		<li>Syntax was largely lifted from Perl</li><br/>
+		<pre>
+if "hello" =~ /ell/
+  puts "hot damn! my regexp matched!"
+end
+		</pre>
+		<li><code>!~</code> is the compliment to <code>=~</code> operator</li>
+		<li>Perl extended regular expression syntax is supported, as well</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Regular Expressions (cont)</h1>
+		<ul>
+		<li>After matching strings, they are most often used for substituting patterns of text</li><br/>
+		<pre>
+"hello".sub /o/, ' no'   # -&gt; "hell no"
+		</pre>
+		<li><code>sub</code> only substitutes first match; <code>gsub</code> subs them all</li><br/>
+		<pre>
+def no_vowels(str)
+  str.gsub /[aeiou]/, '!'
+end
+
+no_vowels "hello world"   # -&gt; "h!ll! w!rld"
+		</pre>
+		</ul>
+	</div>
+	
+	<div class="slide">
+		<h1>Regular Expressions (cont)</h1>
+		<ul>
+		<li>You can do match grouping, too</li><br/>
+		<pre>
+def obfuscate_cc(num)
+  if num =~ /\d\d\d\d-\d\d\d\d-\d\d\d\d-(\d\d\d\d)/
+    "XXXX-XXXX-XXXX-#{$1}"
+  else
+    "invalid card number"
+  end
+end
+puts obfuscate_cc "1234-5678-9012-3456"
+		</pre>
+		<li>Output:</li><br/>
+		<pre>
+"XXXX-XXXX-XXXX-3456"
+		</pre>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Modules and Mix-ins</h1>
+		<ul>
+		<li>Ruby has single inheritance only, so instead, they have "mix-ins"</li>
+		<li><code>Module</code>s can't be instantiated, but their methods and data can be made available to other classes and objects</li>
+		<li>Defining a module is very similar to a class</li><br/>
+		<pre>
+module X
+  # ...
+end
+class Y
+  include X
+  # ...
+end</pre>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Modules and Mix-ins (cont)</h1>
+		<ul>
+		<li>Notice I said classes <b>and</b> objects; here's how to mix-in a Module to an object...</li><br/>
+		<pre>
+obj.extend MyModule
+		</pre>
+		<li>...or add functionality to a specific object instance</li><br/>
+		<pre>
+class &lt;&lt;obj
+  def newmethod
+    puts "I'm not in any other object of this class"
+  end
+end</pre>
+		<li>Has many names: virtual classes, eigenclasses, singleton objects, etc</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Blocks</h1>
+		<ul>
+		<li>Blocks are functions that can be passed to other functions</li>
+		<li>A method yields (producer) to a block (consumer)</li>
+		<ul>
+			<li>Method concentrates on producing values</li>
+			<li>Block can be interchanged to consume values as needed</li>
+		</ul>
+		<li>Single line blocks are written with <code>{ |foo| ... }</code></li>
+		<li>Multiline blocks are written with <code>do |foo| ... end</code></li>
+		<li>Blocks make it easy to implement iterators, callbacks, transactions, etc</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Iterators</h1>
+		<ul>
+		<li>Use a block to iterate over values with on-demand code</li><br/>
+		<pre>
+def fibonacci(max)
+  x, y = 1, 1
+  while x &lt;= max
+    yield x
+    x, y = y, x + y
+  end
+end
+
+fibonacci 30 { |x| print x, " " }  # -&gt; 1 1 2 3...
+y = 0
+fibonacci 30 { |x| y += x }
+p y   # -&gt; 54
+		</pre>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Transactions</h1>
+		<ul>
+		<li>Open a file, pass each line to block and make sure its closed</li>
+		<pre>
+def each_line(file)
+  f = nil
+  begin
+    f = File.open(file)
+    while line = f.gets
+      next if line =~ /^#/
+      yield line
+    end
+  rescue =&gt; e
+    raise e
+  ensure
+    f.close unless f.nil?
+  end
+end
+		</pre>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Closures</h1>
+		<ul>
+		<li>A closure is a function that remembers the context in which it was created</li>
+		<li>They can be useful to implement callbacks</li>
+		<pre>
+class ButtonController
+  def initialize(label, &#38;action)
+    @label = label
+    @action = action
+  end
+  def press
+    @action.call @label
+  end
+end
+# ...
+start = ButtonController.new "Start" { thread.start }
+pause = ButtonController.new "Pause" { thread.pause }
+		</pre>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Closures (cont)</h1>
+		<ul>
+		<li><code>start</code> and <code>pause</code> work even when <code>thread</code> goes out of scope</li>
+		<li>Closure's environment is a reference, not a copy (more on this later)</li>
+		<li>Most commonly created with blocks or <code>lambda</code> method</li><br/>
+		<pre>
+def mkcounter(a)
+  lambda { a += 1; puts "#{a}" }
+end
+		</pre>
+		<li><code>lambda</code> creates a <code>Proc</code> object with the associated block</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Duck Typing</h1>
+		<ul>
+		<li>Calling methods on objects based on desired behavior, not class</li>
+		<li>For this to work, need consistent method naming and behavior</li>
+		<li><code>&lt;&lt;</code> is a good example</li><br/>
+		<pre>
+x &lt;&lt; "yet another line"
+		</pre>
+		<li>This code works whether <code>x</code> is a <code>String</code>, <code>Array</code> or <code>IO</code></li>
+		<li>You should learn this if only because lots of code is written in this style</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Duck Typing (cont)</h1>
+		<ul>
+		<li>Don't use <code>instance_of?</code>; use <code>respond_to?</code></li><br/>
+		<pre>
+if x.respond_to? :&lt;&lt;
+  x &lt;&lt; y
+elsif x.respond_to? :append
+  x.append y
+else
+  raise "no way to append"
+end
+		</pre>
+		<li>You can make an object that acts like another, but does something completely different under the hood</li>
+		<li>Can make program extension and refactoring easier</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>method_missing</h1>
+		<ul>
+		<li><code>method_missing</code> will capture any method call for which the receiver has no predefined method</li>
+		<pre>
+class Roman
+  def romanToInt(str)
+    # ...
+  end
+  def method_missing(methId)
+    str = methId.id2name
+    romanToInt str
+  end
+end
+r = Roman.new
+r.iv      # -&gt; 4
+r.xxiii   # -&gt; 23
+r.mm      # -&gt; 2000
+		</pre>
+		<li>No Ruby app server could work without this method</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Continuations</h1>
+		<ul>
+		<li>Continuations are the saved state of a program</li>
+		<li>Calling a continuation brings execution back to right after it was created</li>
+		<li><code>callcc</code> takes a block and passes a <code>Continuation</code> object to it</li>
+		<li>Often described as a "goto with arguments"</li>
+		<li>When asked why he put in continuations but not macros, Matz said "the people who'd make an awful mess with macros wouldn't even dare to <i>touch</i> continuations"</li>
+		</ul>
+	</div>
+
+	<div class="slide">
+		<h1>Thanks!</h1>
+		<ul>
+		<li>Thanks for coming out!</li>
+		<li>Even though the Mulder clan has a collective aneurism every time they hear me say it, this is <a href="http://phillyonrails.org/">Philly on Rails</a></li>
+		</ul>
+	</div>
+
+</div> <!-- end presentation -->
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write("\<script src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'>\<\/script>" );
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-63708-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+</body>
+</html>

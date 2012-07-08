@@ -1,0 +1,15 @@
+--- 
+title: sipscreen v1.0
+layout: post
+---
+My buddy [mct](http://michael.toren.net) just created an awesome little piece of software called [sipscreen](http://michael.toren.net/code/sipscreen/) which allows you to filter out VoIP calls based on rules of your own choosing on your Linux gateway.
+
+Here are some example call policy rules:
+
+``` sh
+exit 1 if $name =~ /TOLL FREE CALL/i or $number =~ /^(800|877)-/;                                                                                                          
+exit 1 if $number eq "000-000-0000" and $hour >= 3 and $hour <= 9;                                                                                                         
+exit 0;
+```
+
+If you're using VoIP and have it connected to a Linux gateway, you should definitely check this out. Its way easier to accept/reject calls than having to fire up a full [Asterisk](http://www.asterisk.org/) install.

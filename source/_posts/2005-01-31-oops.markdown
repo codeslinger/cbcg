@@ -1,0 +1,5 @@
+--- 
+title: Oops...
+layout: post
+---
+Two people replied to my last post about NewsFire's move to shareware (one of them the author of the software, Mr. David Watanabe). Apparently, he had always stated that NewsFire was to be shareware; he just wasn't actively charging for it until this latest version, 0.9. Now, I can't confirm this was the case for myself via Google cache's or the Wayback Machine, so someone providing a link to the source in question would be nice, but if that truly is the case then I will offer my apologies to Mr. Watanabe.

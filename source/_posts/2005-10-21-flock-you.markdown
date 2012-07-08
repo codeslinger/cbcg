@@ -1,0 +1,7 @@
+--- 
+title: Flock you
+layout: post
+---
+I'm posting this from [Flock](http://www.flock.com/). The only reason I wanted to check it out was to see if it fixed a long-standing issue for Firefox on Mac OS X. When editing on regular Firefox on OS X in a textarea, the cursor falls behind the text you're typing by a few pixels as you edge closer and closer to the right side of the area. This is quite annoying and makes editing long posts/emails in Firefox so much of a hassle that I just write them in vim and then copy and paste them in.
+
+Happily, I can report that Flock does not share that problem *and* I can post right from the browser. I don't really get the big hype around this thing, but I think I'll be using it, provided that it supports the FF extensions that I can't live without. One small thing so far: the default search engine is Yahoo!, not Google. WTF? Who uses Y! Search anymore outside of Yahoo!?

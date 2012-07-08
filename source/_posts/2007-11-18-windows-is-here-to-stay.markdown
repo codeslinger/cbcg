@@ -1,0 +1,5 @@
+--- 
+title: Windows is Here to Stay
+layout: post
+---
+According to Pankaj Ghemawat and Ramon Casadesus-Masanell of Harvard Business School [free isn't good enough to destroy Windows](http://hbswk.hbs.edu/item/4834.html). I found this piece pretty fascinating as it is the first formal model of the Microsoft vs. Open Source debate that I've seen and there was plenty in there that was outside of the current zeitgeist. I had heard that Microsoft secretly loved piracy but I hadn't really thought about what that would mean for Linux making inroads into China (implicitly referred to in the article). China is the biggest battleground for the Microsoft vs. Linux battle and pretty much the last one of any consequence in the operating system wars (barring a new kind of computational model, of course). It is pretty telling, though, that only two of the biggest Internet success stories of today are running Windows: eBay and Myspace. Shows where today's developers heads are. Definitely give the article a good read.

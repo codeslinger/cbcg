@@ -1,0 +1,11 @@
+--- 
+title: Thoughts on GDrive
+layout: post
+---
+[This article](http://blogs.zdnet.com/Google/?p=121) really shows where Google's head is at lately. They are making the classic information lock-up play, the same one IBM made with the 360 mainframes and the same one Microsoft made with Exchange, except on a much grander scale. 
+
+Imagine the power they would wield with a large percentage of even just US customer's data on their servers; to control, to query, to analyse, to "adjust", to manipulate in any way they see fit, because there's no visibility into the maintenance on the customer side. We're all better for the power of Google search, but the data used to power that search is (ostensibly) public. When will they decide that its worth it to start charging you a fee not to index your personal data along with website's data for public search consumption? What happens when Sergey and Larry leave (which they will) and a guy like Steve Ballmer or even worse, John Poindexter, takes over? Anybody who thinks that kind of TIA-esque regime is a good idea should start thinking hard about this and also go back and give [1984](http://www.amazon.com/gp/product/0451524934/sr=8-1/qid=1141517230/ref=pd_bbs_1/102-4615436-8528959?%5Fencoding=UTF8) another go.
+
+I recently interviewed with Google, and the guy wasn't even allowed to tell me what the replication count was for chunks of mail data in the Gmail [GFS](http://labs.google.com/papers/gfs-sosp2003.pdf) cluster(s). Imagine what they could do with _all_ of your data behind your back. Frankly, I find this move both scary and empowering at the same time. I'd love to be able to get at all my data from anywhere with just a browser, but I'd really like to be sure that Google's not serving it up to the US government or scanning through it for IP to steal, too.
+
+Call me paranoid, but there are some real questions here to answer before GDrive can go live, in my opinion. A lot of people complained about privacy concerns when Gmail came out but GDrive is on another level. I just don't think I can trust any one entity with this kind of trump card over me. Think of it this way: if Microsoft made this play, would you trust them with all your data? Now think about the fact that Google will eventually be viewed as Microsoft is today.

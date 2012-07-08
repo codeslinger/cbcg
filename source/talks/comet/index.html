@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <title>Comet: Low-Latency Collaborative Web Applications</title>
+
+ <!-- metadata -->
+ <meta name="generator" content="S5" />
+ <meta name="version" content="S5 1.1" />
+ <meta name="presdate" content="20070329" />
+ <meta name="author" content="Toby DiPasquale" />
+ <meta name="company" content="Commerce360, Inc." />
+
+ <!-- configuration parameters -->
+ <meta name="defaultView" content="slideshow" />
+ <meta name="controlVis" content="hidden" />
+
+ <!-- style sheet links -->
+ <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+ <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+ <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+ <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+
+ <!-- S5 JS -->
+ <script src="ui/default/slides.js" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="layout">
+ <div id="controls"><!-- DO NOT EDIT --></div>
+ <div id="currentSlide"><!-- DO NOT EDIT --></div>
+ <div id="header"></div>
+ <div id="footer">
+  <h1><a href="http://www.phillyemergingtech.com/">Emerging Technologies for the Enterprise</a> &#8226; 2007.03.29</h1>
+  <h2>Comet: Low-Latency Collaborative Web Applications</h2>
+ </div>
+</div>
+
+<div class="presentation">
+
+<div class="slide">
+ <h1>Comet</h1>
+ <h2>Low-Latency Collaborative Web Applications</h2>
+ <h3>Toby DiPasquale</h3>
+ <h4><a href="http://cbcg.net/">Cipher Block Chain Gang</a></h4>
+</div>
+
+<div class="slide">
+ <h1>Is it over yet?</h1>
+ <ul>
+  <li>What is Comet?</li>
+  <li>Why do I care?</li>
+  <li>How does it work?</li>
+  <li>Who's using it now?</li>
+  <li>Where can I find out more about it?</li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>In the beginning...</h1>
+ <ul>
+  <li>...there was HTML
+   <ul><li>HTML - <b>H</b>yper<b>T</b>ext <b>M</b>arkup <b>L</b>anguage</li></ul>
+  </li>
+  <li>document-centric</li>
+  <li>high latency due to full page loads only</li>
+  <li>coarse-grained interactions with the server</li>
+  <li>multi-user from the beginning</li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Next came...</h1>
+ <ul>
+  <li>AJAX - <b>A</b>synchronous <b>J</b>avaScript <b>A</b>nd <b>X</b>ML</li>
+  <li>allowed fine-grained interactions from browser to server</li>
+  <li>reduced latency for a lot of client-initiated interactions</li>
+  <li>no need for full page load every time</li>
+  <li>only pull data for and refresh the parts of the page that required update</li>
+  <li>does not provide for server-initiated interactions</li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>Enter, Comet</h1>
+ <ul>
+  <li>COMET - <b>C</b> <b>O</b> <b>M</b> <b>E</b> <b>T</b> 
+   <ul><li>Not an acronym; just a meme</li></ul>
+  </li>
+  <li>allows full bidirectional, asynchronous communication between browser and server</li>
+  <li>Term coined by <a href="http://alex.dojotoolkit.org/?p=545">Alex Russell</a> of the <a href="http://dojotoolkit.org/">Dojo</a> toolkit</li>
+  <li>harkens back to the dot-com hooplah about "server push"...
+   <ul><li>...except that Comet is more real than hype</li></ul>
+  </li>
+  <li>has nothing to do with <a href="http://en.wikipedia.org/wiki/PointCast">PointCast</a></li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>What is the difference?</h1>
+ <img src="pix/comet.jpg" alt="AJAX vs. Comet connection profile" />
+</div>
+
+<div class="slide">
+ <h1>So?</h1>
+ <ul>
+  <li>Comet brings multi-user to the low-latency Web</li>
+  <li>apps can update all interested parties as things happen</li>
+  <li>potential applications include:
+   <ul>
+    <li>chat</li>
+    <li>conferencing</li>
+    <li>multiplayer games (10-way live Go Fish action!!)</li>
+    <li>auctions</li>
+    <li>tickers</li>
+    <li>monitoring</li>
+    <li>etc</li>
+   </ul>
+  </li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Ok, but how does it work?</h1>
+ <ul>
+  <li>Comet involves using (possibly) new techniques on both the client and server</li>
+  <li>different client-side techniques depending on app profile, browser target, etc</li>
+  <li>different/upgraded server-side technology required to handle Comet load profile</li>
+  <li>let's start with the client-side techniques...</li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Long Polling</h1>
+ <ul>
+  <li><code>XMLHttpRequest</code> connection is opened back to the server</li>
+  <li>once server sends, connection is closed and then immediately reestablished</li>
+  <li>server can send multiple datagrams in one connection to reduce load</li>
+  <li>somewhat higher latency due to connection establishment/teardown</li>
+  <li>can have problems dealing with lots of push messages</li>
+  <li>good if your app can deal with some lag</li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Persistent Frame</h1>
+ <ul>
+  <li>incremental rendering in browser evaluates new messages from server</li>
+  <li>iframe receives inline script tags from persistent connection</li>
+  <li>those tags call function(s) in parent frame to update view</li>
+  <li>also called a "forever frame"</li>
+  <li>most portable method</li>
+  <li>can connect to subdomains, too</li>
+  <li>this is the default method these days</li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>Flash</h1>
+ <ul>
+  <li>Flash's <code>XMLSocket</code> can act as a persistent bridge between browser and server</li>
+  <li>can use <code>crossdomain.xml</code> to do cross-domain calls, too</li>
+  <li>proprietary</li>
+  <li>can't ensure Flash will be installed/enabled/work right</li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>Multipart XMLHTTP</h1>
+ <ul>
+  <li>persistent connection opened to server (chunked transfer encoding)</li>
+  <li>server can then just push data to browser and it will evaluate it as needed</li>
+  <li>great method if it will work for your situation</li>
+  <li>not portable today
+   <ul>
+    <li>IE and FF differ (big shocker there)</li>
+    <li>Safari does not support this at all</li>
+   </ul>
+  </li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>Toolkits using Comet</h1>
+ <ul>
+  <li><a href="http://dojotoolkit.org/">Dojo</a> - dojo.io.cometd</li>
+  <li><a href="http://juggernaut.rubyforge.org/">Juggernaut</a> for Ruby on Rails
+   <ul>
+    <li>uses Flash method</li>
+   </ul>
+  </li>
+  <li><a href="http://weblogs.java.net/blog/jfarcand/archive/2006/07/the_grizzly_com.html">Grizzly</a>/<a href="https://glassfish.dev.java.net/">Glassfish</a> for Java</li>
+  <li>this guy <a href="http://www.jroller.com/page/masini?entry=a_comet_implementation_for_google">hacked it into Google Web Toolkit</a></li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Related Stuff</h1>
+ <ul>
+  <li><a href="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/">JSONP</a>
+   <ul>
+    <li>JSON with Padding</li>
+    <li>used for cross-domain data fetching</li>
+   </ul>
+  </li>
+  <li><a href="http://www.mindsack.com/uxe/dynodes/">Dynodes</a>
+   <ul>
+    <li>a proposal to get around some of the XHR brokeness regarding multiple domains</li>
+    <li>captures the mouse events and dynamically runs remote scripts when you click on objects tagged specially</li>
+   </ul>
+  </li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>What about the server?</h1>
+ <ul>
+  <li>must be able to sustain large numbers of long-lived connections</li>
+  <li>basically will end up looking a lot like a message bus</li>
+  <li>lots of servers are implementing <a href="http://www.cometd.com/">COMETd</a></li>
+  <li>Examples:
+   <ul>
+    <li><a href="http://jetty.mortbay.org/">Jetty 6</a></li>
+    <li><a href="http://httpd.apache.org/">Apache</a> (mod_pubsub or event_mpm)</li>
+    <li><a href="http://nginx.net/">nginx</a></li>
+    <li><a href="http://twistedmatrix.com/">Twisted</a></li>
+    <li><a href="http://www.divmod.org/trac/wiki/DivmodNevow">Nevow</a></li>
+    <li><a href="http://yaws.hyber.org/">Yaws</a> would make a fantastic Comet server</li>
+   </ul>
+  </li>
+</div>
+
+<div class="slide">
+ <h1>Oh the Scale...</h1>
+ <ul>
+  <li>Comet will require handling tons of concurrent connections</li>
+  <li>lots of those connections will be idle at any given time</li>
+  <li>processes and OS-level threads don't scale to the numbers of sockets Comet apps will need</li>
+  <li>newer multiplexing techniques can handle the load: epoll(4), kqueue(2), Solaris' /dev/poll and ports, etc.</li>
+  <li>Erlang has been taking one for the team on this point for over 20 years</li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>COMETd</h1>
+ <ul>
+  <li>combination of server, protocol and JavaScript libraries</li>
+  <li>being implemented by lots of projects
+   <ul>
+    <li>Grizzly</li>
+    <li>Twisted</li>
+    <li>Jetty</li>
+    <li>Perl cometd</li>
+   </ul>
+  </li>
+  <li><a href="http://svn.xantus.org/shortbus/trunk/bayeux/protocol.txt">Bayeux</a> is their JSON-based protocol for event pub/sub</li>
+  <li>hopefully will make it much easier to get a Comet app developed and deployed</li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>Its not all wine and roses</h1>
+ <ul>
+  <li>may require multiplexing logical services down the same physical connection</li>
+  <li>may require some DNS hacks to get multiple domains working together</li>
+  <li>browsers are just now coming to grips with AJAX apps
+   <ul>
+    <li>lots of code may load and run slowly</li>
+    <li>can cause stability issues and crashes</li>
+    <li>can leak memory</li>
+   </ul>
+  </li>
+  <li>intervening proxies will snap off long-idle connections
+   <ul>
+    <li>have to "recycle" connections periodically</li>
+   </ul>
+  </li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>Who is using it?</h1>
+ <ul>
+  <li>A bunch of apps, actually:
+   <ul>
+    <li>GTalk in GMail</li>
+    <li>GDocs (formerly Writely)</li>
+    <li>Renkoo</li>
+    <li>cgi:irc</li>
+    <li>Meebo</li>
+    <li>KnowNow</li>
+    <li>JotLive</li>
+    <li>Lingr</li>
+    <li><strong>NOT</strong> Campfire
+     <ul>
+      <li>they are just polling really often</li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>Lets take a quick look at how <a href="http://www.lingr.com/">Lingr</a> does Comet</li>
+ </ul>
+</div>
+ 
+<div class="slide">
+ <h1>Lingr</h1>
+ <ul>
+  <li><a href="http://www.lingr.com/">Lingr</a> is a Web 2.0, realtime chat application with some community features</li>
+  <li>they use a Comet-based architecture to pull this off</li>
+  <li>even have an <a href="http://www.lingr.com/developers">API</a> and everything</li>
+  <li>really open with the backend process on <a href="http://blog.lingr.com/">their blog</a></li>
+  <br/>
+  <img src="pix/lingr_badge.png" alt="Lingr badge example" />
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Lingr Architecture v1</h1>
+ <ul>
+  <li>main Web platform is <a href="http://www.rubyonrails.org/">Ruby on Rails</a></li>
+  <li>use persistent frame style of Comet (dynamic <code>&lt;script&gt;</code> tags and JSONP)</li>
+  <li>all requests first shunted to a Jetty cluster</li>
+  <li><a href="http://www.mortbay.com/MB/log/gregw/?permalink=Jetty6Continuations.html">Jetty 6 Continuations</a> allow them to keep track of connection state between events</li>
+  <li>persistent connection to the Jetty cluster for real-time updates</li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Lingr Architecture V2</h1>
+ <ul>
+  <li>But, this had some trouble</li>
+  <li>previously, all requests went through Jetty</li>
+  <li>in V2, only the Comet-required requests went through Jetty (<code>observe</code>)</li>
+  <li>all others went directly to Rails cluster</li>
+  <li>this relieved load on the Jetty cluster but had to implement notifications between Rails and Jetty clusters to keep in sync</li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Lingr Architecture Now</h1>
+ <center>
+  <img src="pix/lingr_architecture.png" alt="Lingr Architecture" />
+ </center>
+</div>
+
+<div class="slide">
+ <h1>Uh, are you finished yet?</h1>
+ <ul>
+  <li>Comet holds a lot of promise for bringing real-time collaboration to the Web</li>
+  <li>some kinks left to be worked out on the browser side</li>
+  <li>new expectations of load and load profiles on the server side will force more scalable server technologies</li>
+  <li>plus, we users get cool new apps</li>
+ </ul>
+</div>
+
+<div class="slide">
+ <h1>Thanks!</h1>
+ <center>
+  <br/>
+  <h4>The slides are available here: <a href="http://cbcg.net/talks/">http://cbcg.net/talks</a></h4>
+  <br/><br/>
+  <h2>Thanks for coming!</h2>
+  <br/><br/>
+  <h2>Questions?</h3>
+ </center>
+</div>
+
+</div> <!-- class="presentation" -->
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write("\<script src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'>\<\/script>" );
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-63708-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+</body>
+</html>
+

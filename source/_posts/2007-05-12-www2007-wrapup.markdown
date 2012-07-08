@@ -1,0 +1,15 @@
+--- 
+title: WWW2007 Wrapup
+layout: post
+---
+Wow, that was a really great conference. I met a bunch of people there, saw a few I already knew from other fields and listened to some great talks. I wasn't sure if I was going to feel that it was good enough to entertain thoughts of hitting next year's conference in Beijing, but now I just might.
+
+Also, I saw some more good talks yesterday:
+
+[Scaling Up All Pairs Similarity Search](http://www2007.org/program/paper.php?id=342)
+
+[Exposing Private Information by Timing Web Applications](http://www2007.org/program/paper.php?id=555)
+
+[On Anonymizing Query Logs via Token-based Hashing](http://www2007.org/program/paper.php?id=582)
+
+Those are just some that were really good.  I also have a stack that I want to read but who's talks I missed. I'll post the pics I took with the phone when I get off this damn airplane.

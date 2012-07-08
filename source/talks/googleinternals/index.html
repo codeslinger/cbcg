@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+ <title>Google Internals</title>
+ 
+ <!-- metadata -->
+ <meta name="generator" content="S5" />
+ <meta name="version" content="S5 1.1" />
+ <meta name="presdate" content="20060802" />
+ <meta name="author" content="Toby DiPasquale" />
+ <meta name="company" content="Cipher Block Chain Gang" />
+ 
+ <!-- configuration parameters -->
+ <meta name="defaultView" content="slideshow" />
+ <meta name="controlVis" content="hidden" />
+ 
+ <!-- style sheet links -->
+ <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+ <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+ <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+ <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+ 
+ <!-- S5 JS -->
+ <script src="ui/default/slides.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div class="layout">
+ <div id="controls"><!-- DO NOT EDIT --></div>
+ <div id="currentSlide"><!-- DO NOT EDIT --></div>
+ <div id="header"></div>
+ <div id="footer">
+  <h1><a href="http://www.phillylinux.org/">Philly LUG</a> &#8226; 2006.08.02</h1>
+  <h2>Google Internals</h2>
+ </div>
+</div>
+
+<div class="presentation">
+
+ <div class="slide">
+  <h1>Google Internals</h1>
+  <h2>Answers in 0.2 Seconds or Your Money Back</h2>
+  <h3>Toby DiPasquale</h3>
+  <h4><a href="http://cbcg.net/">Cipher Block Chain Gang</a></h4>
+ </div>
+
+ <div class="slide">
+  <h1>Who the hell am I?</h1>
+  <ul>
+   <li>I work for <a href="http://www.symantec.com/">Symantec</a> because they bought <a href="http://www.turntide.com/router/">TurnTide</a></li>
+   <li>I have never worked for Google</li>
+   <li>No one I know works for Google</li>
+   <li>I have been tracking them heavily for about 2 years now</li>
+   <li>Also, I interviewed with them (twice)
+    <ul>
+     <li><strong>Me:</strong> "I hear you guys build your own custom, 1000-port GigE switches; is that right?"</li>
+     <li><strong>Interviewer:</strong> "Hey, you're not supposed to know that."</li>
+    </ul>
+   </li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>What are we talking about?</h1>
+  <ul>
+   <li>The pieces that make up Google's key infrastructure</li>
+   <li>Cluster design/manangement</li>
+   <li>Google File System</li>
+   <li>MapReduce</li>
+   <li>Sawzall</li>
+   <li>BigTable</li>
+   <li><strong>NOT</strong> PageRank
+    <ul>
+     <li>I'm not an SEO huckster</li>
+    </ul>
+   </li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>You do not want that power bill</h1>
+  <ul>
+   <li>Currently estimated to have <a href="http://www.nytimes.com/2006/06/14/technology/14search.html?ei=5090&en=d96a72b3c5f91c47&ex=1307937600&adxnnl=1&pagewanted=2&adxnnlx=1154482380-6vgbP6nu9v9JZmFTDs0qVQ">~450,000 active machines</a></li>
+   <li>No, that's not a typo... 450,000</li>
+   <li>Search is expensive</li>
+   <li>Massive parallelism yields major performance boost</li>
+   <li>With that many machines, cluster management becomes a huge problem</li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Pile on at the datacenter!</h1>
+  <ul>
+   <li>Tons of cheap x86 boxes</li>
+   <li>Price/performance is king</li>
+   <li>Power is a major issue, too</li>
+   <li>Dataset is split up over multiple machines
+    <ul>
+     <li>Index servers</li>
+     <li>Document servers</li>
+     <li>Spellcheck servers</li>
+     <li>etc.</li>
+    </ul>
+   </li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>The Idea...</h1>
+  <ul>
+   <li>Replication, replication, replication</li>
+   <li>Each piece of data is available on multiple machines</li>
+   <li>Literally dozens of copies of the Web across their clusters</li>
+   <li>Requests are split up over the logical clusters and handled in parallel</li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Hardware</h1>
+  <ul>
+   <li>Cheap x86 boxes, ~40-80/rack</li>
+   <li>Modest disk space/box (250GB?; one per box)</li>
+   <li>Intra-rack network is 100baseT</li>
+   <li>Inter-rack network is 1000baseT</li>
+   <li>They build their own servers and switches</li>
+   <li>Have many patents on cable/rack/power innovations</li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Hardware (cont)</h1>
+  <ul>
+   <li>Traditional big-iron box (circa 2003)
+    <ul>
+     <li>8 2GHz Xeons</li>
+     <li>64GB RAM</li>
+     <li>8TB disk</li>
+     <li>$758,000 USD</li>
+    </ul>
+   </li>
+   <li>Prototypical GOOG rack (circa 2003)
+    <ul>
+     <li>176 2GHz Xeons</li>
+     <li>176GB RAM</li>
+     <li>~7TB disk</li>
+     <li>$278,000 USD</li>
+    </ul>
+   </li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Google File System</h1>
+  <ul>
+   <li>Distributed filesystem w/constraints</li>
+   <li>Implemented entirely in userspace</li>
+   <li>"Chunks" (i.e. blocks) stored on machines as regular files
+    <ul><li>64MB block size</li></ul>
+   </li>
+   <li>Designed to optimize multiple-reader/multiple-appender files/workloads
+    <ul>
+     <li>Crawlers atomically append to a file</li>
+     <li>Readers read file at the same time</li>
+     <li>No races/corruption issues</li>
+    </ul>
+   </li>
+   <li>Each logical chunk is replicated across 3+ boxes</li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Google File System (cont)</h1>
+  <p style="text-align: center;">
+   <img src="pix/gfs.png" alt="" width="925" height="421" title="GFS Architecture"/>
+  </p>
+ </div>
+
+ <div class="slide">
+  <h1>Workqueue</h1>
+  <ul>
+   <li>Key piece of infrastructure at Google</li>
+   <li>Schedules and starts tasks on the machines of a cluster</li>
+   <li>Similar to <a href="http://www.cs.wisc.edu/condor/">Condor</a></li>
+   <li>Those tasks run on same as GFS boxes
+    <ul><li>Keep that data close, baby</li></ul>
+   </li>
+   <li>Can reschedule jobs which fail</li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>MapReduce</h1>
+  <ul>
+   <li>Method for processing data in massive parallel
+    <ul>
+     <li><code>map(fn1, list) -&gt; list</code></li>
+     <li><code>reduce(fn2, init, list) -&gt; scalar</code></li>
+    </ul>
+   </li>
+   <li>Mappers spawned for each GFS chunk of input and apply <code>fn1</code> to each record in chunk
+    <ul>
+     <li>Intermediate data output according to "partitions" (some hash function)</li>
+    </ul>
+   </li>
+   <li>Reducers aggregate mappers' intermediate data according to <code>fn2</code>
+    <ul>
+     <li>One reducer job per partition</li>
+    </ul>
+   </li>
+   <li>Brian Goetz: <a href="http://www.aw-bc.com:8081/catalog/academic/product/0,1144,0321349601,00.html">It's the mutable state, stupid.</a></li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>MapReduce (cont)</h1>
+  <ul>
+   <li>Pseudocode for a "word count" job:</li><br/>
+   <pre>
+map(String key, String value):
+  for each word w in value:
+    EmitIntermediate(w, "1")
+
+reduce(String key, Iterator values):
+  int result = 0
+  for each v in values:
+    result += ParseInt(v)
+  Emit(AsString(result))
+   </pre>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>MapReduce (cont)</h1>
+  <ul>
+   <li>Lots of uses for this paradigm
+    <ul>
+     <li><code>grep</code>-style jobs</li>
+     <li>log file analysis</li>
+     <li>reverse web-link graph</li>
+     <li>inverted index</li>
+    </ul>
+   </li>
+   <li>GOOG search index is built using a series of MR jobs
+    <ul>
+     <li>The output of one becomes the input to the next</li>
+     <li>Last I heard, it was 24 MR jobs, but its almost certainly more now</li>
+    </ul>
+   </li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Sawzall</h1>
+  <ul>
+   <li>DSL built on top of MapReduce (statically typed)</li>
+   <li>Think of it as "distributed awk"</li>
+   <li>Filters read data and pass to aggregator which passes to coallater</li>
+   <li>Only allows tasks which are both commutative and associative
+    <ul>
+     <li>Allows intermediate steps to be executed in any order (read: on any box)</li>
+    </ul>
+   </li>
+   <li>Error handling then becomes trivial: a worker dies, restart it</li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Sawzall (cont)</h1>
+  <ul>
+   <li>Sawzall script to generate geographic query distribution data:</li><br/>
+   <pre>
+proto "querylog.proto"
+
+queries_per_degree: table sum[lat: int][lon: int] of int;
+
+log_record: QueryLogProto = input;
+
+loc: Location = locationinfo(log_record.ip);
+emit queries_per_degree[int(loc.lat)][int(loc.lon)] &lt;- 1;
+   </pre>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Sawzall (cont)</h1>
+  <ul>
+   <li>That script's data is used to generate this map:</li>
+   <p style="text-align: center;">
+   <img src="pix/sawzall.png" alt="" title="Query distribution"/>
+   </p>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>BigTable</h1>
+  <ul>
+   <li>A Google-style "database"</li>
+   <li>More like the most bad-ass spreadsheet you've ever used</li>
+   <li>Built on top of GFS, Workqueue and MapReduce</li>
+   <li>Each BigTable is a multidimensional sparse map</li>
+   <li>Stored on immutable structures called SSTables
+    <ul>
+     <li>also, a journal per machine</li>
+    </ul>
+   </li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>BigTable (cont)</h1>
+  <ul>
+   <li>For each table, there's one META0 table for the locs of all META1 "tablets"</li>
+   <li>The META1s contain the locs of the actual "tablets" (with data in them, even)</li>
+   <li>Tablets are based on GFS files/chunks</li>
+   <li>Makes heavy use of prefetching/caching for performance</li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>BigTable (cont)</h1>
+  <ul>
+   <li>Columns are in form "family:qualifier"
+    <ul>
+     <li>e.g. <code>anchor:phillylinux.org</code></li>
+     <li>columns are typed</li>
+    </ul>
+   </li>
+   <li>Cells are addressed by 3-tuple
+    <ul>
+     <li><code>row:column:timestamp</code></li>
+    </ul>
+   </li>
+   <li>Each cell has a timestamp
+    <ul>
+     <li>Multiple versions of a cell can coexist simultaneously</li>
+    </ul>
+   </li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>BigTable (cont)</h1>
+  <ul>
+   <li>Column families can be split into "locality groups"
+    <ul>
+     <li>increases performance by splitting SSTables</li>
+     <li>small, hot columns can be separate from large, cold ones</li>
+    </ul>
+   </li>
+   <li>SSTable data is compressed
+    <ul>
+     <li>BMDiff (~100MB/s write, ~1000MB/s read)</li>
+     <li>Zippy (fast variation on LZW)</li>
+    </ul>
+   </li>
+   <li>Used by Google Maps, Orkut, Google Print, Search History, etc.</li>
+  </ul>
+ </div>
+
+ <div class="slide">
+  <h1>Conclusion</h1>
+  <ul>
+   <li>Thanks for not falling asleep</li>
+   <li>Any questions?</li>
+  </ul>
+ </div>
+
+</div>    <!-- class="presentation" -->
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write("\<script src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'>\<\/script>" );
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-63708-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+</body>
+
+</html>

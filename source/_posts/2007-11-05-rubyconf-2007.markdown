@@ -1,0 +1,26 @@
+--- 
+title: RubyConf 2007
+layout: post
+---
+I just got back from [RubyConf 2007](http://rubyconf.org) tonight and it was awesome! The conference was a well-oiled machine with superb content and attendees. My only beef, and this is small, is that the hotel Wifi was a bit weak, but that's to be expected.
+
+[Confreaks](http://www.confreaks.com/) video-taped the whole conference, including RejectConf and they said the video will be available for streaming and download sometime next week. Their videos are awesome so you should definitely check them out.
+
+The level of conversation in the hallways and taverns was just unreal. There were so many smart people there working on really great stuff that I didn't know who to talk to next!
+
+Evan's keynote was probably the best talk of the conference for me, but I'm a  bit biased towards Rubinius, given my [previous issues with the MRI as it stands today](/blog/2007/04/22/python-up-ruby-down-if-that-runtime-dont-work-then-its-bound-to-drizzown). Francis Hwang's talk was the most intriguing and made me think the most. Ryan Davis's talk was packed and really entertaining. I missed Laurent's talk but it was similarly packed and people said it was hyper-cool. Eric's talk was really awesome, too, as he was giving us all his tips about how to stay productive: coming from a guy with 40+ open source projects under his belt, that's definitely good info.
+
+Some highlights for me, in no particular order:
+
+* Got to meet [Tim Bray](http://www.tbray.org/ongoing) and he's just as sharp as I though, if not sharper
+* Met some of the [Twitter](http://www.twitter.com/) guys and they are really, really cool, down-to-earth dudes
+* I finally got to meet Matz in person and I used the opportunity to interrogate him on the state of Ruby's GC
+* [Ryan Davis](http://www.zenspider.com/) and [Francis Hwang](http://fhwang.net/) gave me some really good tips on testing and I am very grateful for that
+* Had a couple really good conversations with [Evan Phoenix](http://blog.fallingsnow.net/) ; man, he's one smart-ass cookie and a great showman, too
+* Hung out with a bunch of really smart and interesting Rubyists, including [Obie Fernandez](http://jroller.com/obie/) and [Steven Bristol](http://www.workingwithrails.com/person/6290-steven-a-bristol)
+* Talked to [Ezra](http://brainspl.at/) a bunch about [Merb](http://merb.devjavu.com/) and [Engine Yard](http://www.engineyard.com) and got to meet [Yehuda Katz](http://yehudakatz.com/)
+* Played in a video-taped Werewolf game with some of the best Rubyists in the world (who shall remain nameless at this time because the game became... uh, lets say "controversial")
+
+There wasn't a lot of Rails-related stuff there (which was good) and the people who were there were really into Ruby, not just Rails. DHH didn't even show up so the noise level was low.
+
+I'm definitely going to be going to RubyConf 2008. Thanks to Rich, David and Chad for an awesome conference!
