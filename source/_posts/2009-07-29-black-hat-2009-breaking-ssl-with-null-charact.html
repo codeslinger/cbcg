@@ -1,0 +1,9 @@
+---
+title: Black Hat 2009 -- Breaking SSL with null characters
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_medium_quote">If you apply for a certificate, the certificate authority looks at the common name on the form and contacts the domain owner. The CA ignores the subdomain. The trick is to drop in a null character in the subdomain. If you register, <a href="http://www.paypal.com" rel="nofollow">www.paypal.com</a>[null character].thoughtcrime.org, the CA will contact the owner of thoughtcrime.org and issue the cert. When clients like Firefox use NSS to verify the cert, the null character causes them to think the certficate is valid for <a href="http://www.paypal.com" rel="nofollow">www.paypal.com</a> because they stop at the null character. Even if the person examines the cert in their browser, it will show <a href="http://www.paypal.com" rel="nofollow">www.paypal.com</a>.</blockquote></p><p><div class="posterous_quote_citation">via <a href="http://hackaday.com/2009/07/29/black-hat-2009-breaking-ssl-with-null-characters/" rel="nofollow">hackaday.com</a>
+</div>
+    <p>Bad news for legit peeps.</p>
+</div>

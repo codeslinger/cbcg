@@ -1,0 +1,17 @@
+---
+title: Sharding & IDs at Instagram
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_medium_quote">
+<p>We’ve delegated ID creation to each table inside each shard, by using PL/PGSQL, Postgres’ internal programming language, and Postgres’ existing auto-increment functionality.</p>
+<p>Each of our IDs consists of:</p>
+<ul>
+<li>41 bits for time in milliseconds (gives us 41 years of IDs with a custom epoch)</li>
+<li>13 bits that represent the logical shard ID</li>
+<li>10 bits that represent an auto-incrementing sequence, modulus 1024. This means we can generate 1024 IDs, per shard, per millisecond</li>
+</ul>
+</blockquote></p><p><div class="posterous_quote_citation">via <a href="http://instagram-engineering.tumblr.com/post/10853187575/sharding-ids-at-instagram" rel="nofollow">instagram-engineering.tumblr.com</a>
+</div>
+    
+</div>

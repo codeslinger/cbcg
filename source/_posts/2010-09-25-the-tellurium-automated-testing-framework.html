@@ -1,0 +1,21 @@
+---
+title: The Tellurium Automated Testing Framework
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_long_quote">The framework was developed from <a href="http://seleniumhq.org/" rel="nofollow">the Selenium framework</a>, but with a different testing concept. Most existing web testing frameworks, like Selenium, primarily focus on individual UI elements. Tellurium on the other hand, treats the whole UI element as a widget; calling the element a UI module.
+<p> </p>
+<p>Taking the Google search UI as an example, it is represented in Tellurium as follows:</p>
+<br /><div class="CodeRay">
+  <div class="code"><pre>ui.Container(uid: "GoogleSearchModule", clocator: [tag: "td"]){
+    InputBox(uid: "Input", clocator: [title: "Google Search"])
+    SubmitButton(uid: "Search", clocator: [name: "btnG", value: "GoogleSearch"])
+    SubmitButton(uid: "ImFeelingLucky", clocator: [value: "I'm Feeling Lucky"])
+}</pre></div>
+</div></p><p><p>As shown in this example, the UI module is a set of nested UI elements with tags and attributes. The adoption of the UI module makes Tellurium expressive, and robust to changes. It is also easy to represent dynamic web content, and easy to maintain</p>
+<p> </p>
+</blockquote>
+<div class="posterous_quote_citation">via <a href="http://www.infoq.com/articles/tellurium_intro" rel="nofollow">infoq.com</a>
+</div>
+<p>This looks to me like the *right* way to test a Web UI. Definitely going to be testing this out.</p>
+</div>

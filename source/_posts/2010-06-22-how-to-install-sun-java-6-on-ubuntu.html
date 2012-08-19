@@ -1,0 +1,13 @@
+---
+title: How to install Sun Java 6 on Ubuntu
+layout: post
+---
+<p>For some reason, Canonical has decided to default to OpenJDK for Ubuntu 10.04. This would be fine if they didn’t also bury the option to use Sun’s JDK way deep in the Interwebz where its not easily found. Here’s how to get the real JDK in case you care about stuff like compatibility or stability or whatnot…</p></p><p><p>Add the following lines to <code>/etc/apt/sources.list</code>:</p></p><p><div class="CodeRay">
+  <div class="code"><pre>deb <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> lucid partner
+deb-src <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> lucid partner</pre></div>
+</div></p><p><p>Then issue the following commands:</p></p><p><div class="CodeRay">
+  <div class="code"><pre>sudo aptitude update
+sudo aptitude install sun-java6-jdk</pre></div>
+</div></p><p><p>You will have to accept the license agreement dialog, as is normal for installing Sun’s JDK. Then, in order to use Sun’s JDK, issue the following command:</p></p><p><div class="CodeRay">
+  <div class="code"><pre>sudo update-java-alternatives -s java-6-sun</pre></div>
+</div></p><p><p>You should then be good to go.</p>

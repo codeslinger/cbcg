@@ -1,0 +1,28 @@
+---
+title: Automatically populating .ssh/known_hosts
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_medium_quote">
+<p>At that point I got busy with other things (most notably final preparations
+for the <a href="http://www.freebsd.org/releases/9.0R/announce.html" rel="nofollow">FreeBSD
+9.0-RELEASE</a> announcement) but on Sunday evening I sat down and wrote a
+much-needed shell script:
+</p>
+<blockquote class="posterous_short_quote">
+<div class="CodeRay">
+  <div class="code">
+<div class="CodeRay">
+  <div class="code"><pre># ssh-knownhost hostname [fingerprint ...]</pre></div>
+</div>
+</div>
+</div>
+</blockquote>
+The ssh-knownhost script uses ssh-keyscan to download all the host
+keys for the specified hostname; uses ssh-keygen to compute their fingerprints;
+compares them to the list of fingerprints provided on the command-line; and
+adds any new host keys to ~/.ssh/known_hosts.  Short, simple, and
+effective.</blockquote></p><p><div class="posterous_quote_citation">via <a href="http://www.daemonology.net/blog/2012-01-16-automatically-populating-ssh-known-hosts.html" rel="nofollow">daemonology.net</a>
+</div>
+    <p>Could be really handy.</p>
+</div>

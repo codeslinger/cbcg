@@ -1,0 +1,16 @@
+---
+title: FUTEX_WAIT hangs Java on Linux
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_long_quote">
+<p>Ok, I'm documenting this for those that hit this same problem. Is it taking a LONG time to run some Java app, making it seemingly hang? This happens  when running Ubuntu or any flavour of Linux in VMware or Virtual Box. I d/l a pre-made image of Ubuntu Server 9.10 from <a href="http://www.thoughtpolice.co.uk/vmware/" rel="nofollow">http://www.thoughtpolice.co.uk/vmware/</a>, put JDK 1.6_18 on it, and went on with installing some app servers and other stuff for setting up a Hudson SWARM.</p>
+<p>I attempt to start some Java procs, and they took a long time to start. I broke out strace to see what the hell was going on, and it seems that the procs were getting stuck in FUTEX_WAIT. Googling FUTEX_WAIT lead to many false solutions. Further examination of the strace pointed to some stuff happening in /dev/random just before the FUTUX_WAIT. On a hunch, I reconfigured the /dev/random like so:</p>
+<p>rm /dev/random </p>
+<p>mknod -m 644 /dev/random c 1 9 </p>
+<p>and VOILA! things started working normally. Hopefully, you get here via a google search and find this solution to save you a couple of hours of agony. </p>
+</blockquote>
+<div class="posterous_quote_citation">via <a href="http://www.springone2gx.com/blog/pratik_patel/2010/01/solution_futex_wait_hangs_java_on_linux__ubuntu_in_vmware_or_virtual_box" rel="nofollow">springone2gx.com</a>
+</div>
+<p>This shit just cost me a month... wish I'd found this sooner.</p>
+</div>

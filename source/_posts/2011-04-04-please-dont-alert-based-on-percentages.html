@@ -1,0 +1,37 @@
+---
+title: Please don't alert based on percentages
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote><div></p><p><p>One of the classic mistakes made by monitoring and alerting systems is
+to alert based on percentages; if something registers at 90% or 95% or
+whatever, it raises various sorts of alerts. This is a terrible mistake.</p></p><p><p>(The people who write these monitoring systems love percentage based
+alerts because they're so easy to do, which in my cynical view is why
+lots of monitoring systems ship with them.)</p></p><p><p>The easiest way to see the problem of percentage based alerts is to
+consider disk space monitoring. Suppose the system alerts based on a
+filesystem reaching 95% full. Does this give you useful information?</p></p><p><p>Well, no. First, it doesn't tell you how much disk space is left. 95%
+full on a 50 GByte filesystem is very much different than 95% full on
+a 1.5 TByte filesystem; in fact, at 95% used the 1.5 TB filesystem has
+more free space than the entire 50 GByte filesystem ever had. Filesystem
+space is one of those cases where you usually care more about absolute
+numbers than about percentages.</p></p><p><p>Second, even simple space used doesn't actually tell you if you should
+panic. What generally matters is not that some quantity has reached an
+arbitrary value, what matters is whether or not you are going to run
+out of capacity at some point in the near future. To have some idea of
+that, you need to know not just the current capacity left but how fast
+capacity has been consumed. 50 Gbytes free at a space growth rate of 256
+Mbytes a day is very different from 50 Gbytes free at a space growth
+rate of 10 Gbytes a day; you ignore the former (unless you have a very
+long lead time on getting space) but you really want to pay attention to
+the latter because you only have a few days left to get more space.</p></p><p><p>(Similarly you care both about the long term trend rate and any short
+term deviations from it because both of them can cause you problems.)</p></p><p><p>Similar issues apply to pretty much any other metric you may be
+monitoring. Doing useful alerts about capacity problems is just not
+amenable to simple percentage based solutions, because such solutions
+are not answering a useful question. If you want to make useful alerts,
+they should generally at least be based on intelligently chosen absolute
+numbers.</p>
+</div></blockquote>
+<div class="posterous_quote_citation">via <a href="http://utcc.utoronto.ca/~cks/space/blog/sysadmin/NoAlertOnPercentages" rel="nofollow">utcc.utoronto.ca</a>
+</div>
+    
+</div>

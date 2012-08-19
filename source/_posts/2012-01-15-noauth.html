@@ -1,0 +1,22 @@
+---
+title: NOAuth
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_medium_quote">
+<p>There are different approaches for getting to the user's credentials, I will present the easiest here and I will concentrate on iOS:</p>
+<ol>
+<li>
+<p>We register a custom NSURLProtocol for 'keylogger://' URLs. It is a dummy implementation which just makes sure that those URLs aren't processed further by the framework.</p>
+</li>
+<li>
+<p>In the webView:didFinishLoad: method, inject some JavaScript into the loaded page. The JavaScript will attach a listener to every input element on the page and that listener will call a 'keylogger://' URL crafted by us which contains the character the user entered.</p>
+</li>
+<li>
+<p>In the shouldStartLoadWithRequest: method, we capture all of the 'keylogger://' requests and log the characters. Then we stop loading, because those URLs are just used to communicate between JS and Objective-C.</p>
+</li>
+</ol>
+</blockquote></p><p><div class="posterous_quote_citation">via <a href="http://neonacho.calepin.co/noauth.html" rel="nofollow">neonacho.calepin.co</a>
+</div>
+    
+</div>

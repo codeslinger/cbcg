@@ -1,0 +1,82 @@
+---
+title: Getting ZeroMQ and jzmq running on Mac OS X
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote>
+<div>
+<p>From: <a href="http://blog.pmorelli.com/getting-zeromq-and-jzmq-running-on-mac-os-x" rel="nofollow">http://blog.pmorelli.com/getting-zeromq-and-jzmq-running-on-mac-os-x</a></p>
+<p>I found the install to be a tad onerous, with enough gaps and issues to be worth documenting, so here are the steps.</p>
+<p>I'm on Mac OS X Snow Leopard, 10.6.5. I use <a href="https://github.com/mxcl/homebrew" rel="nofollow">Homebrew</a> as my package installer (on top of <a href="http://rvm.beginrescueend.com/" rel="nofollow">RVM</a>, which I love.) At some point, I should create a Homebrew formula for this.</p>
+<p>Credit to these links for the fixing the problems I ran into.</p>
+<ul>
+<li><span><a href="https://github.com/zeromq/jzmq/issues/issue/6" rel="nofollow">https://github.com/zeromq/jzmq/issues/issue/6</a></span></li>
+<li><span><a href="http://stackoverflow.com/questions/3522248/how-do-i-compile-jzmq-for-zeromq-on-osx" rel="nofollow">http://stackoverflow.com/questions/3522248/how-do-i-compile-jzmq-for-zeromq-o...</a></span></li>
+<li><span><a href="https://github.com/yawn/jzmq/blob/master/README" rel="nofollow">https://github.com/yawn/jzmq/blob/master/README</a></span></li>
+</ul>
+<p>1. Install ZeroMQ. </p>
+<div class="CodeRay">
+<div class="code">
+<div class="CodeRay">
+  <div class="code"><pre>brew install zeromq</pre></div>
+</div></p><p></div>
+</div>
+<p> </p>
+<p>2. Install pkg-config. you'll need it for the jzmq build.</p></p><p><div class="CodeRay">
+<div class="code">
+<div class="CodeRay">
+  <div class="code"><pre>brew install pkg-config</pre></div>
+</div></p><p></div>
+</div>
+<p> </p>
+<p>3. You'll have to symlink pkg.m4 into /usr/share/aclocal, also for the jzmq build.</p></p><p><div class="CodeRay">
+<div class="code">
+<div class="CodeRay">
+  <div class="code"><pre>sudo ln -s /usr/local/share/aclocal/pkg.m4 /usr/share/aclocal/pkg.m4</pre></div>
+</div></p><p></div>
+</div>
+<p> </p>
+<p>4. Install the Java Developer Package from Apple's ADC site: <a href="http://connect.apple.com/" rel="nofollow">http://connect.apple.com/</a>. You'll need it because for whatever reason, the included JDK install on Mac OS X moved the /include directory, which contains the jni.h file, to some other location besides the directory containing /bin and /lib. I suppose I could have symlinked it, but this seemed cleaner. From their docs: </p>
+<blockquote class="posterous_short_quote">
+<p><em>The Java Developer package puts an additional copy of the Java SE 6 bundle in <code>/Library/Java/JavaVirtualMachines/</code>. This copy is installable without disturbing the existing system JDK. </em></p>
+</blockquote>
+<p>The download, since Apple doesn't like direct links, is under Downloads &gt; Java. I used the <strong>Java for Mac OS X 10.6 Update 3 Developer Package </strong>download.</p>
+<p>5. Set your JAVA_HOME to point to the new JDK. I usually stick this in .bash_profile.</p></p><p><div class="CodeRay">
+<div class="code">
+<div class="CodeRay">
+  <div class="code"><pre>export JAVA_HOME=$(/usr/libexec/java_home)</pre></div>
+</div></p><p></div>
+</div>
+<p> </p>
+<p>6. Download <a href="https://github.com/zeromq/jzmq" rel="nofollow">jzmq</a>, the java JNI lib for zmq. Uncompress and cd into that dir, and build it:</p>
+<div class="CodeRay">
+<div class="code">
+<div class="CodeRay">
+  <div class="code"><pre>./autogen.sh
+./configure
+make
+make install</pre></div>
+</div></p><p></div>
+</div>
+<p>You'll end up with the zmq.jar in /usr/local/share/java/ and the native lib in /usr/local/lib</p>
+<p> </p>
+<p>7. Fire up your favorite IDE (I use <a href="http://www.jetbrains.com/idea/" rel="nofollow">Intellij</a>), create a new project, and add the zmq.jar to your project.</p>
+<p> </p>
+<p>8. However you run your code, you'll want to pass the following flag to the VM as an arg. It tells it where to find the native lib</p>
+<div class="CodeRay">
+<div class="code">
+<div class="CodeRay">
+  <div class="code"><pre>-Djava.library.path=/usr/local/lib</pre></div>
+</div></p><p></div>
+</div>
+<p>In Intellij, this is in Run &gt; Edit Configurations &gt; New &gt; VM Parameters</p>
+<p> </p>
+<p>9. Finally, paste the code from the <a href="http://goo.gl/cO9Go" rel="nofollow">article</a> into a new class, and run. Yay.</p>
+<p> </p>
+<p>That should be it, let me know if you run into any issues. </p>
+</div>
+</blockquote>
+<p> </p>
+<p>This is a handy reference for getting 0MQ for Java working on OS X. This works on both Snow Leopard and Lion.</p>
+<p>I would suggest using "./configure --prefix=/usr" in step 6 so as not to require step 8 at all, but its up to you.</p>
+</div>

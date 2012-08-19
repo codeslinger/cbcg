@@ -1,0 +1,19 @@
+---
+title: How to install Java 7 on Ubuntu
+layout: post
+---
+<p>I just went through the fairly painful process of installing Java 7 on Ubuntu. I say “painful” because there’s no dpkg yet available that I could find and most of the tutorials I found only update the java(1) binary and not all of the executables for the JDK. So, I’m going to post proper instructions on how to do this for the children (they are the future, after all).</p></p><p><p>First, download the .bin installer file from <a href="http://download.java.net/jdk7/binaries/" rel="nofollow">here</a>. Then unpack it via:</p></p><p><div class="CodeRay">
+  <div class="code"><pre>sh jdk-7-ea-bin-b98-linux-x64-17_jun_2010.bin</pre></div>
+</div></p><p><p>It will ask you to accept the license by typing <em>yes</em> at the end. Do this. It will then produce a directory called <code>jdk1.7.0</code>. Now you’ll want to put that directory in its proper location in <code>/usr/lib/jvm</code>:</p></p><p><div class="CodeRay">
+  <div class="code"><pre>sudo mv jdk1.7.0 /usr/lib/jvm/
+sudo chown -R root:root /usr/lib/jvm/jdk1.7.0</pre></div>
+</div></p><p><p>Now you will want to download this script and run it.</p></p><p>Script to install all alternatives for JDK 7 </p><p><p><script src="https://gist.github.com/445930.js"></script></p></p><p><div class="CodeRay">
+  <div class="code"><pre>curl <a href="http://gist.github.com/raw/445930/3349713e5eae62b14428894c4971331526129df5/install_java7_alternatives">http://gist.github.com/raw/445930/3349713e5eae62b14428894c4971331526129df5/in...</a> &gt; install_java7_alternatives
+sudo ./install_java7_alternatives</pre></div>
+</div></p><p><p>Next, you will want to download this file and install it into <code>/usr/lib/jvm/.jdk1.7.0.jinfo</code>:</p></p><p>Info file for update-java-alternatives </p><p><p><script src="https://gist.github.com/445929.js"></script></p></p><p><div class="CodeRay">
+  <div class="code"><pre>curl <a href="http://gist.github.com/raw/445929/794c6775d16a9b7ed03b05fd318cf62362bcaa1a/.jdk1.7.0.jinfo">http://gist.github.com/raw/445929/794c6775d16a9b7ed03b05fd318cf62362bcaa1a/.j...</a> &gt; .jdk1.7.0.jinfo
+sudo mv .jdk1.7.0.jinfo /usr/lib/jvm/
+sudo chown root:root /usr/lib/jvm/.jdk1.7.0.jinfo</pre></div>
+</div></p><p><p>Finally, run the following:</p></p><p><div class="CodeRay">
+  <div class="code"><pre>sudo update-java-alternatives -s jdk1.7.0</pre></div>
+</div></p><p><p>Now you have JDK 7 installed and ready for use. You can switch back and forth between JVMs with the aforementioned <code>update-java-alternatives</code> command.</p>

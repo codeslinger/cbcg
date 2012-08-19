@@ -1,0 +1,26 @@
+---
+title: Static analysis of an unknown compression format
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_long_quote">
+<p>I really enjoy reverse engineering stuff. I also really like playing video
+games. Sometimes, I get bored and start wondering how the video game I'm
+playing works internally. Last year, this led me to analyze <em>Tales of Symphonia
+2</em>, a Wii RPG. This game uses a custom virtual machine with some really
+interesting features (including cooperative multithreading) in order to
+describe cutscenes, maps, etc. I started to be very interested in how this
+virtual machine worked, and wrote a (mostly) complete implementation of this
+virtual machine in C++.</p>
+<p>However, I recently discovered that some other games are also using this same
+virtual machine for their own scripts. I was quite interested by that fact and
+started analyzing scripts for these games and trying to find all the
+improvements between versions of the virtual machine. Three days ago, I started
+working on <em>Tales of Vesperia</em> (PS3) scripts, which seem to be compiled in the
+same format as I analyzed before. Unfortunately, every single file in the
+scripts directory seemed to be compressed using an unknown compression format,
+using the magic number "TLZC".</p>
+</blockquote></p><p><div class="posterous_quote_citation">via <a href="http://blog.lse.epita.fr/articles/8-static-analysis-of-an-unknown-compression-format.html" rel="nofollow">blog.lse.epita.fr</a>
+</div>
+    <p>Very cool reveng post.</p>
+</div>

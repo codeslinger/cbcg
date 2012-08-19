@@ -1,0 +1,14 @@
+---
+title: Install Riak on Mac OS X Lion
+layout: post
+---
+<p>The instructions to install Riak from <a href="http://wiki.basho.com/Installing-on-Mac-OS-X.html#From-source" rel="nofollow">Basho's wiki</a> are a bit off for OS X Lion as you have to build it 32-bit for it to work. I've found the following to be effective at installing Riak 0.14.2 on OS X Lion:</p>
+<div class="CodeRay">
+  <div class="code"><pre>$ curl -O <a href="http://downloads.basho.com/riak/riak-0.14/riak-0.14.2.tar.gz">http://downloads.basho.com/riak/riak-0.14/riak-0.14.2.tar.gz</a>
+$ tar xzvf riak-0.14.2.tar.gz
+$ cd riak-0.14.2
+$ CC=gcc-4.2 CFLAGS="-m32" LDFLAGS="-m32" make all rel
+$ cd rel/riak
+$ ulimit -n 1024
+$ bin/riak start</pre></div>
+</div></p><p><p>At this point, you should have a running Riak installation. Have fun!</p>

@@ -1,0 +1,75 @@
+---
+title: Nginx -- 24 -- Too Many Open Files Error And Solution
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote><div></p><p><p><span>I</span>'m getting the following error in my nginx server error log file:</p>
+<blockquote class="posterous_medium_quote"><p>2010/04/16 13:24:16 [crit] 21974#0: *3188937 open() "<strong><span>/usr/local/nginx/html/50x.html" failed (24: Too many open files)</span></strong>, client: 88.x.y.z, server: example.com, request: "GET /file/images/background.jpg HTTP/1.1", upstream: "http://10.8.4.227:81//file/images/background.jpg", host: "example.com"</p></blockquote>
+<p>How do I fix this problem under CentOS / RHEL / Fedora Linux or UNIX like operating systems?<br /><br />
+Linux / UNIX sets soft and hard limit for the number of file handles and open files. You can use ulimit command to view those limitations:<br /><code>su - nginx</code><br />
+To see the hard and soft values, issue the command as follows:<br /><code>ulimit -Hn<br />
+ulimit -Sn</code></p>
+ Increase Open FD Limit at Linux OS Level 
+<p>Your operating system set limits on how many files can be opened by nginx server. You can easily fix this problem <a href="http://www.cyberciti.biz/tips/linux-procfs-file-descriptors.html" rel="nofollow">by setting or increasing system open file limits</a> under Linux. Edit file /etc/sysctl.conf, enter:<br /><code># vi /etc/sysctl.conf</code><br />
+Append / modify the following line:<br /><code>fs.file-max = 70000</code><br />
+Save and close the file. Edit /etc/security/limits.conf, enter:<br /><code># vi /etc/security/limits.conf</code><br />
+Set soft and hard limit for all users or nginx user as follows:</p>
+<div class="CodeRay">
+  <div class="code">
+<div class="CodeRay">
+  <div class="code"><pre>nginx       soft    nofile   10000
+nginx       hard    nofile  30000</pre></div>
+</div>
+</div>
+</div></p><p><p>Save and close the file. Finally, reload the <a href="http://www.cyberciti.biz/faq/making-changes-to-proc-filesystem-permanently/" rel="nofollow">changes with sysctl command</a>:<br /><code># sysctl -p</code></p>
+ nginx worker_rlimit_nofile Option (Increase Open FD Limit at Nginx Level) 
+<p>Nginx also comes with  worker_rlimit_nofile directive which allows to enlarge this limit if it's not enough on fly at process level. To set the value for maximum file descriptors that can be opened by nginx process. Edit nginx.conf file, enter:<br /><code># vi /usr/local/nginx/conf/nginx.conf</code><br />
+Append / edit as follows:</p>
+<div class="CodeRay">
+  <div class="code">
+<div class="CodeRay">
+  <div class="code"><pre># set open fd limit to 30000
+worker_rlimit_nofile 30000;</pre></div>
+</div>
+</div>
+</div></p><p><p>Save and close the file. Reload nginx web server, enter:<br /><code># /usr/local/nginx/sbin/nginx -t  &amp;&amp; /usr/local/nginx/sbin/nginx -s reload<br />
+# su - nginx<br />
+$ ulimit -Hn<br />
+$ ulimit -Sn<br /></code><br />
+Sample outputs:</p>
+<div class="CodeRay">
+  <div class="code">
+<div class="CodeRay">
+  <div class="code"><pre>30000
+10000</pre></div>
+</div>
+</div>
+</div></p><p>See also: 
+<ul>
+<li><a href="http://www.cyberciti.biz/tips/linux-procfs-file-descriptors.html" rel="nofollow">Linux: Find out how many file descriptors are being used</a></li>
+</ul> Featured Articles: 
+<ul>
+<li><a href="http://www.cyberciti.biz/tips/top-linux-monitoring-tools.html" rel="nofollow">20 Linux System Monitoring Tools Every SysAdmin Should Know</a></li>
+	<li><a href="http://www.cyberciti.biz/tips/linux-security.html" rel="nofollow">20 Linux Server Hardening Security Tips</a></li>
+	<li><a href="http://www.cyberciti.biz/tips/my-10-unix-command-line-mistakes.html" rel="nofollow">My 10 UNIX Command Line Mistakes</a></li>
+        <li>
+<a href="http://www.cyberciti.biz/tips/linux-laptop.html" rel="nofollow">The Novice Guide To Buying A Linux Laptop</a> <img src="http://files.cyberciti.biz/assets/i/new_fa.png" height="9" width="23" />
+</li>
+        <li><a href="http://www.cyberciti.biz/tips/spice-up-your-unix-linux-shell-scripts.html" rel="nofollow">10 Tools To Add Some Spice To Your UNIX Shell Scripts</a></li>
+</ul>
+<div>
+<div>Want to read Linux tips and tricks, but don't have time to check our blog everyday? Subscribe to our <strong>daily email newsletter</strong> to make sure you don't miss a single tip/tricks. Subscribe to our <em><a href="http://www.cyberciti.biz/tips/subscribe#weekly" rel="nofollow">weekly newsletter here</a></em>!	</div></p><p><ul>
+<li><a href="http://www.cyberciti.biz/tools/email.php?hash=1&amp;url=http://www.cyberciti.biz/faq/linux-unix-nginx-too-many-open-files/&amp;subject=Nginx:%2024:%20Too%20Many%20Open%20Files%20Error%20And%20Solution&amp;continue=7302" rel="nofollow">Email FAQ to a friend</a></li>
+<li><a href="http://www.cyberciti.biz/tools/faqs.php?p=/faq/7302.pdf&amp;u=http://www.cyberciti.biz/faq/linux-unix-nginx-too-many-open-files/&amp;s=Nginx:%2024:%20Too%20Many%20Open%20Files%20Error%20And%20Solution" rel="nofollow">Download PDF version</a></li>
+<li><a href="http://www.cyberciti.biz/faq/linux-unix-nginx-too-many-open-files/print/?k=true&amp;r_POST_P_HELPER_ID=7302" rel="nofollow">Printable version</a></li>
+<li>
+<a href="http://www.cyberciti.biz/faq/linux-unix-nginx-too-many-open-files/feed/?k=true" rel="nofollow">Comment RSS feed</a><br />
+</li>
+<li>Last Updated: 05/6/10
+</li>
+</ul>
+</div>
+<br />				</div></blockquote></p><p><div class="posterous_quote_citation">via <a href="http://www.cyberciti.biz/faq/linux-unix-nginx-too-many-open-files/" rel="nofollow">cyberciti.biz</a>
+</div>
+    <p>So I don't forget this again ;-)</p>
+</div>

@@ -1,0 +1,21 @@
+---
+title: SBT and Your Own Maven Repository
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_medium_quote">
+<p>To make the my libraries accessible to others, I could simply place the jar
+file somewhere, such as the "download" area of the project's <a href="http://www.github.com/" rel="nofollow">GitHub</a>
+repository. This works fine, as long as the jar has no dependencies.
+However, if my jar depends on other libraries, anyone using my code has to
+chase down and install those dependencies. A better solution is to create
+and deploy a <a href="http://maven.apache.org/" rel="nofollow">Maven</a> file, since the POM file will capture those
+dependencies.</p>
+<p>As it happens, SBT has excellent support for Maven. It will generate a POM
+automatically, and it will publish to a Maven repository. In most cases,
+you never have to write a single line of Maven XML; SBT handles all that
+for you.</p>
+</blockquote></p><p><div class="posterous_quote_citation">via <a href="http://brizzled.clapper.org/id/100/" rel="nofollow">brizzled.clapper.org</a>
+</div>
+    
+</div>

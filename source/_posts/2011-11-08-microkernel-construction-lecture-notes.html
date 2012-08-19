@@ -1,0 +1,112 @@
+---
+title: Microkernel Construction Lecture Notes
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote><div>
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Preface</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">1. Overview</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Monolithic Kernels</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Microkernel-Based Systems</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Historic Attempts</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Basic Abstractions and Mechanisms</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">2. Threads and Thread Switching</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Threads</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Switching Threads</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Kernel Stack Models</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Per-Processor Kernel Stack</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Per-Thread Kernel Stack</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Sample Code</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">3. System Calls</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Traditional System Calls on x86</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Fast System Calls on x86</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Reconciling Stack Layouts</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Returning From System Calls</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">4. TCBs</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Locating TCBs</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Locating the TCB of the Current Thread</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Locating the TCB of a Thread by Thread ID</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Locating the TCB of the Next Ready-to-Run Thread</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">0-Mapping-Trick</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Address Space Layout</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Address Space Regions</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Regions in the Kernel Address Space</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Synchronization of the Kernel Address Space</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Processor-Specific Data</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">5. IPC Functionality and Interface</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Synchronous Communication</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Communication Primitives</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Message Types</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Timeouts</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Send Timeout</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Receive Timeout</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Transfer Timeout</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Timeout Encoding</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Encoding of IPC Parameters</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Operation and Addresses</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Deceiving IPC and Proxies</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Timeouts</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Message Content</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Receive Buffers</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">IPC Result</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Virtual Registers and the UTCB</a></span></dt>
+</dl></dd>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">6. IPC Implementation</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">IPC and Scheduling</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">General Implementation of Short IPC</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Fast Path IPC</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Performance Considerations</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Combining Fast and Slow Paths</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Long IPC</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">String IPC</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Copy In/Copy Out</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Temporary Mapping Area</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Management of the Temporary Mapping Area</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Temporary Mapping Area on Multi-Processor Machines</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">7. Dispatching</a></span></dt>
+<dd><dl>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Scheduling in L4</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Optimizations</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Dispatching Mechanism</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Lazy Dispatching</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Timeouts</a></span></dt>
+</dl></dd>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">8. Virtual Memory Mapping</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">9. Small Spaces</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">10. Local IPC</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">11. Interrupt and Exception Handling</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">12. Security</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">Index</a></span></dt>
+<dt><span><a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html#" rel="nofollow">A. Communication Spaces</a></span></dt>
+</dl>
+</div></blockquote></p><p><div class="posterous_quote_citation">via <a href="http://i30www.ira.uka.de/~neider/edu/mkc/mkc.chunked/index.html" rel="nofollow">i30ira.uka.de</a>
+</div>
+    
+</div>

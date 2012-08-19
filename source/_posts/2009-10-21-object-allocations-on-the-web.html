@@ -1,0 +1,20 @@
+---
+title: object allocations on the web
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_medium_quote">
+<p>How many objects does a Rails request allocate? Here are Twitter's numbers:</p>
+<ul>
+<li>
+<b>API</b>: 22,700 objects per request</li>
+<li>
+<b>Website</b>: 67,500 objects per request </li>
+<li>
+<b>Daemons</b>: 27,900 objects per action</li>
+</ul>
+<p>I want them to be lower. Overall, we burn 20% of our front-end CPU on garbage collection, which seems high. Each process handles ~29,000 requests before getting killed by the memory limit, and the GC is triggered about every 30 requests.</p>
+</blockquote></p><p><div class="posterous_quote_citation">via <a href="http://blog.evanweaver.com/articles/2009/10/21/object-allocations-on-the-web/" rel="nofollow">blog.evanweaver.com</a>
+</div>
+    <p>This is a pretty damn sad state of affairs with respect to Rails when you consider how highly-tuned Twitter must be at this stage of the game.</p>
+</div>

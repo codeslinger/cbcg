@@ -1,0 +1,20 @@
+---
+title: impressive concurrency benchmark for redis
+layout: post
+---
+<div class="posterous_bookmarklet_entry">
+<blockquote class="posterous_medium_quote">
+<p>Here is a graph of the concurrency from 1-10 requests
+<br /><img src="http://allinram.info/redis/concurrency/1-10.png" height="200" width="300" /><br /> Concurrency of one is bad, but by 10 concurrent connections we have
+<br /> already peaked at 107K GET/s
+<br /></p>
+<p>Here is the graph of concurrency from 1-27000 requests
+<br /><img src="http://allinram.info/redis/concurrency/1-27000.png" height="200" width="300" /><br /> This blew my mind, there is minimal performance degradation starting
+<br /> at 4000 concurrent requests and at 26000 concurrent requests the
+<br /> performance is 87.6K/s .. unbelievably good
+<br /></p>
+</blockquote>
+<div class="posterous_quote_citation">via <a href="http://groups.google.com/group/redis-db/browse_thread/thread/1fc6fd6c8937dda7?pli=1" rel="nofollow">groups.google.com</a>
+</div>
+    <p>Wow, these are some really strong results. @antirez kicks some major ass!</p>
+</div>

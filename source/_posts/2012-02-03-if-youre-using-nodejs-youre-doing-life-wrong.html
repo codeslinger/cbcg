@@ -1,0 +1,17 @@
+---
+title: If you're using Node.js, you're doing life wrong
+layout: post
+---
+<p>This morning, on a conference mailing list, I made some disparaging remarks about Node.js (the title of this post, in fact). A couple people asked me why I felt that way. Rather than respond individually, I'll just list my reasons here:</p>
+<p> </p>
+<p class="p2"><strong>V8 is not server-class</strong></p>
+<p class="p2">At my <a href="http://trustmetrics.com/" rel="nofollow">current place</a>, we have a Web crawler where some portions are leveraging Chrome/V8. Take a guess which component absolutely <strong>dominates</strong> the bug count and issue list? Not to mention the fact that its balls-ass slower than some straight un-optimized Scala. We're looking to get rid of it completely ASAFP.</p>
+<p class="p2">On a larger note, using JavaScript on the server-side seems kind of ridiculous. If Linden Labs came out with a server-side framework in LindenScript, would you use that? How about if Apple came out with a framework based on AppleScript?</p>
+<p class="p2"><strong>Callback spaghetti is about the last pattern with which you'd ever want to write anything</strong></p>
+<p class="p2">I've written servers in just about every kind of server framework pattern there is. Node's is the absolute worst. It provides the least amount of aid and comfort to the programmer and its nigh-on-impossible to follow the code 6 months later. The idea that the broken-ass concurrency model forced on Javascript by old browser implementations is actually a *good thing* gives me a fucking aneurism.</p>
+<p class="p2"><strong>Non-blocking != fast != scalable</strong></p>
+<p class="p2">This is probably the most annoying point for me. First of all, scalability has very little to do with raw speed. Just because you're fast does not mean you're scalable. You know what's fast? MySQL. You know what's not scalable by itself? MySQL. The hype around Node.js on this issue makes me want to punch faces. Furthermore, Node.js isn't even that fast. You can do much better with Scala and its a much nicer language, to boot. Oh, and nevermind about those extra CPUs you bought: you won't be needing those. Events and non-blocking are instantaneous, so you can do everything on a single core, right?</p>
+<p class="p2"><strong>JavaScript</strong></p>
+<p class="p2">The Ruby and Python communities are just now, many years after the hype has faded, learning that stuff like dependency injection and proper modularization are actually good things that help you maintain code over time. JavaScript has very little support for any of those nice things: it doesn't even have namespaces, for chrissakes. Why would I want to repeat these same mistakes over and over again in a new language? Knowing a language is not the same as being able to maintain services written in that language over the long haul.</p>
+<p class="p2"> </p>
+<p class="p2">It seems to me that people who are really crazy about Node.js are people who only knew JavaScript to begin with and to whom none of the above would ever even occur. Perhaps, this is a case of <a href="http://en.wikipedia.org/wiki/Worse_is_better" rel="nofollow">Worse Is Better</a> and I'll eventually have to eat my words on this one. But the kind of misunderstanding going on in <a href="http://www.youtube.com/watch?v=-sfZqL4Plxc&amp;t=4m2s" rel="nofollow">this video clip</a> seems to pervade the Node.js hype and gives me rageface.</p>
