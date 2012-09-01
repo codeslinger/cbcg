@@ -2,6 +2,8 @@
 title: "Talks"
 layout: page
 ---
+* [C.R.E.A.M.: Codd Rules Everything Around Me](/talks/NoSQL-Drexel-2012-08.pdf)
+  * 28 Aug 2012 -- [Drexel University: CS 500 Database Theory](http://www.cs.drexel.edu/~jsalvage/Summer2010/CS500/index.html)
 * [Non-Relational Databases](https://docs.google.com/present/view?id=0AceFtgs2trMyZGNkNjl4N2JfMjdmdHBjcHdkYw&hl=en&pli=1)
   * 26 Aug 2010 -- [Drexel University: CS 500 Database Theory](http://www.cs.drexel.edu/~jsalvage/Summer2010/CS500/index.html)
 * [Cassandra: Your New Best Girl](/talks/Cassandra-PL.pdf)
