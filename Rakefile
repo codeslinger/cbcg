@@ -241,7 +241,7 @@ task :rsync do
 end
 
 desc "Generate website and deploy via rsync"
-task :genrsync => [:integrate, :generate, :rsync] do
+task :pub => [:integrate, :generate, :rsync] do
 end
 
 desc "deploy public directory to github pages"
