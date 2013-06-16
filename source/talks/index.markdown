@@ -2,6 +2,8 @@
 title: "Talks"
 layout: page
 ---
+* [Gooooo(al)!: Introduction to the Go programming language](/talks/golangpres/index.html)
+  * 23 Jan 2013 -- [Philly Lambda](http://groups.google.com/group/philly-lambda)
 * [C.R.E.A.M.: Codd Rules Everything Around Me](/talks/NoSQL-Drexel-2012-08.pdf)
   * 28 Aug 2012 -- [Drexel University: CS 500 Database Theory](http://www.cs.drexel.edu/~jsalvage/Summer2012/CS500/index.html)
 * [Non-Relational Databases](https://docs.google.com/present/view?id=0AceFtgs2trMyZGNkNjl4N2JfMjdmdHBjcHdkYw&hl=en&pli=1)

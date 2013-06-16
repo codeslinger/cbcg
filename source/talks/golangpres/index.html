@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Gooooo(al)!</title>
+		<meta name="description" content="Introduction to the Go programming language"/>
+		<meta name="author" content="Toby DiPasquale"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<link rel="stylesheet" href="css/reveal.min.css"/>
+		<link rel="stylesheet" href="css/theme/simple.css" id="theme"/>
+    <link rel="stylesheet" href="plugin/highlight/styles/idea.css"/>
+		<script>
+			document.write('<link rel="stylesheet" href="css/print/' + (window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper') + '.css" type="text/css" media="print">');
+		</script>
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+      <div class="slides">
+				<section>
+					<h1>Gooooo(al)!</h1>
+					<p><small><a href="http://cbcg.net">Toby DiPasquale</a> / <a href="http://twitter.com/codeslinger">@codeslinger</a></small></p>
+				</section>
+        <section>
+          <h2>Yet another programming language?</h2>
+        </section>
+				<section>
+          <h3>A systems language out of Google designed for</h3>
+          <ul>
+            <li>speed</li>
+            <li>simplicity</li>
+            <li>scale</li>
+          </ul>
+				</section>
+        <section>
+          <h1>Speed</h1>
+        </section>
+        <section>
+          <h3>Native compilation</h3>
+          <ul>
+            <li>amd64</li>
+            <li>x86</li>
+            <li>ARM</li>
+            <li>cross-compilation quite easy</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Very fast builds</h3>
+        </section>
+        <section>
+          <h3>Standard profiling and benchmarking tools</h3>
+        </section>
+        <section>
+          <h1>Simplicity</h1>
+        </section>
+        <section>
+          <h3>Straightforward C-like syntax</h3>
+        </section>
+        <section>
+          <h3>Interfaces over inheritance</h3>
+        </section>
+        <section>
+          <h3>First-class concurrency</h3>
+        </section>
+        <section>
+          <h1>Scale</h1>
+        </section>
+        <section>
+          <h3>Canonical build tools</h3>
+        </section>
+        <section>
+          <h3>Canonical maintenance tools</h3>
+        </section>
+        <section>
+          <h3>Static linking</h3>
+        </section>
+        <section>
+          <h1>Features</h1>
+        </section>
+        <section>
+          <h3>Strongly typed</h3>
+        </section>
+        <section>
+          <pre><code class="go">
+ var arg uint32
+
+ //...
+
+ // explicit casts only allowed in Go
+ fmt.Printf("arg as int = %d", arg.(int))
+          </code></pre>
+        </section>
+        <section>
+          <h3>Value types</h3>
+        </section>
+        <section>
+          <pre><code class="go">
+ // this takes up the amount of space that you'd expect
+ type TCPPacket struct {
+     SrcPort  uint16
+     DestPort uint16
+     Seq      uint32
+     Ack      uint32
+     Flags    uint16
+     Window   uint16
+     Csum     uint16
+     Urgent   uint16
+     Option   uint32
+     Data     []byte
+ }
+          </code></pre>
+        </section>
+        <section>
+          <h3>Data structures</h3>
+        </section>
+        <section>
+          <ul>
+            <li>Array</li>
+            <li>Slice</li>
+            <li>Map</li>
+            <li>Linked list</li>
+            <li>Suffix array</li>
+            <li>Ring buffer</li>
+            <li>Heap</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Multiple return values</h3>
+        </section>
+        <section>
+          <pre><code class="go">
+ type Boxofjunk struct {
+     f *os.File
+ }
+ 
+ func NewBoxofjunk(file string) (*Boxofjunk, error) {
+     f, err := os.Open(file)
+     if err != nil {
+         return nil, err
+     }
+     b := new(Boxofjunk)
+     b.f = f
+     return b, nil
+ }
+          </code></pre>
+        </section>
+        <section>
+          <h3>Case-based exports</h3>
+        </section>
+        <section>
+          <pre><code class="go">
+ // this function is visible to all packages
+ func PublicFunction(arg string) error {
+   // ...
+ }
+
+ // this function is only visible within its package
+ func internalFunction(arg string) error {
+   // ...
+ }
+          </code></pre>
+        </section>
+        <section>
+          <h3>Garbage collected</h3>
+        </section>
+        <section>
+          <h3>No exceptions (sort of)</h3>
+        </section>
+        <section>
+          <h3>Composition over inheritance</h3>
+          <ul>
+            <li>No classes</li>
+            <li>No subtype inheritance</li>
+            <li>Structural typing only</li>
+          </ul>
+        </section>
+        <section>
+          <pre><code class="go"> package io
+
+ type Reader interface {
+   Read(p []byte) (n int, err error)
+ }
+
+ //...
+
+ package junkatronics
+
+ type MyStuff interface{}
+
+ // MyStuff now satisfies the io.Reader interface
+ func (m *MyStuff) Read(p []byte) (n int, err error) {
+   //...
+ }</code></pre>
+        </section>
+        <section>
+          <h3>Embedding</h3>
+        </section>
+        <section>
+          <pre><code class="go">
+ type MyReadWriter interface {
+     io.Reader
+     io.Writer
+ }
+
+ var b []byte
+ //...
+ _, err := myReadWriter.Read(b)
+          </code></pre>
+        </section>
+        <section>
+          <h3>CSP-style concurrency</h3>
+        </section>
+        <section>
+          <pre><code class="go">
+ listener, err := net.Listen("tcp", ":3456")
+ if err != nil {
+     log.Fatalln(err)
+ }
+ for {
+     conn, err := listener.Accept()
+     if err != nil {
+         log.Println(err)
+         continue
+     }
+     go handleConnection(conn)
+ }
+          </code></pre>
+        </section>
+        <section>
+          <h3>Channels</h3>
+        </section>
+        <section>
+          <pre><code class="go">
+ func handleSignals(exitChan chan int) {
+     signalChan := make(chan os.Signal, 1)
+     signal.Notify(signalChan, syscall.SIGTERM, syscall.SIGQUIT)
+     go func() {
+         &lt;-signalChan
+         exitChan &lt- 1
+     }()
+ }
+ //...
+ handleSignals(exitChan)
+ select {
+ case shutdownNow := &lt;-exitChan:
+     // handle shutdown
+ }
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="go">
+ // Unbuffered channels
+ // - sends block until received
+ syncChan := make(chan int)
+ syncChan2 := make(chan int, 0)
+
+ // Buffered channel
+ // - sends don't block unless channel is full
+ asyncChan := make(chan int, 100)
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="go">
+ countingSem := make(chan int, MaxInFlight)
+
+ func handle(r *Request) {
+     countingSem &lt;- 1  // Wait for slot to free up
+     process(r)
+     &lt;-countingSem     // Free up slot for next request to run
+ }
+
+ func Serve(queue chan *Request) {
+     for {
+         req := &lt-queue
+         go handle(req)
+     }
+ }
+          </code></pre>
+        </section>
+        <section>
+          <h3>Panic / Defer</h3>
+        </section>
+        <section>
+          <pre><code class="go">
+ func DoStuff(path string) error {
+     f, err := os.Open(path)
+     if err != nil {
+         return err
+     }
+     defer f.Close()
+     //...
+     if somethingBadHappened() {
+         panic("crazy stuff happened!")
+     }
+     //...
+ }
+          </code></pre>
+        </section>
+        <section>
+          <h3>Rich standard library</h3>
+        </section>
+        <section>
+          <ul>
+            <li>Compression (tar,zip,bzip2)</li>
+            <li>Crypto/TLS</li>
+            <li>HTML templating</li>
+            <li>Image manipulation</li>
+            <li>HTTP</li>
+            <li>SMTP</li>
+            <li>JSON</li>
+            <li>Text parsing and Unicode</li>
+            <li>...and much more!</li>
+          </ul>
+        </section>
+        <section>
+          <h1>Bugs</h1>
+        </section>
+        <section>
+          <h3>Unused variables/imports are errors</h3>
+        </section>
+        <section>
+          <h3>Tools assume single massive repo</h3>
+        </section>
+        <section>
+          <h3>No concept of versioning</h3>
+        </section>
+				<section>
+					<h1>FIN</h1>
+				</section>
+			</div>
+		</div>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+		<script>
+			Reveal.initialize({
+				controls:   false,
+				progress:   true,
+				history:    true,
+				center:     true,
+        loop:       false,
+        keyboard:   true,
+				theme:      Reveal.getQueryHash().theme,
+				transition: Reveal.getQueryHash().transition || 'default',
+        dependencies: [{
+          src: 'lib/js/classList.js',
+          condition: function() {return !document.body.classList;}
+        }, {
+          src: 'plugin/highlight/highlight.js',
+          async: true,
+          callback: function() {hljs.initHighlightingOnLoad();}
+        }]
+			});
+		</script>
+	</body>
+</html>
