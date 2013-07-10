@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>Go Forth and Multiply</title>
+		<meta name="description" content="Concurrency and Communication in Go"/>
+		<meta name="author" content="Toby DiPasquale"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<link rel="stylesheet" href="css/reveal.min.css"/>
+		<link rel="stylesheet" href="css/theme/simple.css" id="theme"/>
+    <link rel="stylesheet" href="plugin/highlight/styles/idea.css"/>
+		<script>
+			document.write('<link rel="stylesheet" href="css/print/' + (window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper') + '.css" type="text/css" media="print">');
+		</script>
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+      <div class="slides">
+				<section>
+          <div style="text-align:left">
+            <h1>Go forth and</h1>
+            <h1><strong>Multiply</strong></h1>
+            <div style="margin-top:4em">Concurrency and Communication in Go</div>
+          </div>
+        </section>
+        <section>
+          <div style="text-align:right; margin-top:4em">
+            <h2>Toby DiPasquale</h2>
+            <div><a target="_blank" href="http://cbcg.net/">cbcg.net</a></div>
+          </div>
+				</section>
+        <section>
+          <div style="text-align:left">
+            <h3>Go makes concurrency simple</h3>
+            <div class="fragment">
+              <h3>Supports parallelism, too...</h3>
+            </div>
+            <div class="fragment">
+              <h2><strong>They are not the same</strong></h2>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3><strong>Concurrency:</strong> "several independent activities, each of which executes at its own pace"<small>1</small></h3>
+          <div style="margin-top:2em">
+            <small>[1] <a target="_blank" href="http://www.info.ucl.ac.be/~pvr/book.html">Concepts, Techniques, and Models of Computer Programming</a></small>
+          </div>
+        </section>
+        <section>
+          <h3><strong>Parallelism:</strong> Tasks actually happening simultaneously</h3>
+        </section>
+        <section>
+          <div style="text-align:left">
+            <h3>Concurrency is a conceptual property of a program</h3>
+            <div class="fragment" style="text-align:right;margin-top:2em">
+              <h3>Parallelism is a runtime detail</h3>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div style="text-align:left">
+            <h3>We'll talk mostly concurrency</h3>
+            <h4>...let the runtime deal with parallelism</h4>
+          </div>
+        </section>
+
+        <section>
+          <h1>Examples</h1>
+        </section>
+
+        <section>
+          <div style="text-align:left">
+            <h2>Fork-Join</h2>
+            <h4>(aka Scatter/Gather)</h4>
+          </div>
+        </section>
+        <section>
+          <div style="text-align:left"><h3>Bunch of items to process</h3></div>
+          <div style="text-align:left"><div class="fragment"><h3>Idempotent work; can be done concurrently</h3></div></div>
+        </section>
+        <section>
+          <pre><code class="go"> func ForkJoin(work []*JobSpec) {
+   jobs := make(chan *JobSpec, len(work))
+   results := make(chan *JobResult)
+   //...</code></pre>
+        </section>
+        <section>
+          <pre><code class="go">   // we're going to work on up to NumCPU items at once
+   for i := 0; i &lt; runtime.NumCPU(); i++ {
+     go func() {
+       // see how easy it is to iterate a channel?
+       for job := range jobs {
+         results &lt;- ProcessJob(job)
+       }
+     }()
+   }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go">   // load all work into the input channel
+   for _, spec := range work {
+     jobs &lt;- spec
+   }
+
+   // indicate when to shutdown by closing channel
+   close(jobs)</code></pre>
+        </section>
+        <section>
+          <pre><code class="go">   // now iterate each work item and handle the result
+   for i := 0; i &lt; len(work); i++ {
+     result := &lt;-results
+     // handle result here...
+   }
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func ForkJoin(work []*JobSpec) {
+   jobs := make(chan *JobSpec, len(work))
+   results := make(chan *JobResult)
+   for i := 0; i &lt; runtime.NumCPU(); i++ {
+     go func() {
+       for job := range jobs {
+         results &lt;- ProcessJob(job)
+       }
+     }()
+   }
+   for _, spec := range work { jobs &lt;- spec }
+   close(jobs)
+   for i := 0; i &lt; len(work); i++ {
+     result := &lt;-results
+     // handle result here...
+   }
+ }</code></pre>
+        </section>
+
+        <section>
+          <div style="text-align:left">
+            <h2>SMTP Service</h2>
+          </div>
+        </section>
+        <section>
+          <div style="text-align:left">
+            <h3>Multiple clients connecting over TCP</h3>
+            <div class="fragment">
+              <h3>Sending requests concurrently</h3>
+            </div>
+            <div class="fragment">
+              <h3>Expecting responses concurrently</h3>
+            </div>
+          </div>
+        </section>
+        <section>
+          <pre><code class="go"> type TCPService interface {
+   Addr() *net.TCPAddr
+   SetClientOptions(*net.TCPConn) error
+   Handle(*net.TCPConn)
+   Shutdown()
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func RunTCP(t TCPService) {
+   l, err := net.ListenTCP("tcp", t.Addr())
+   if err != nil {
+     t.Shutdown()
+     return
+   }
+   defer l.Close()
+   for {
+     conn, err := l.AcceptTCP()
+     if err != nil { continue }
+     if err := t.SetClientOptions(conn); err != nil {
+       conn.Close()
+       continue
+     }
+     go t.Handle(conn)
+   }
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> type Verdict int
+ const (
+   Continue = iota
+   Terminate
+ )
+
+ type SMTPService struct {
+   cfg      Config
+   addr     *net.TCPAddr
+   exited   chan int
+   draining bool
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func NewSMTPService(c Config, exited chan int) *SMTPService {
+   return &SMTPService{
+     cfg:      c,
+     addr:     c.GetListenAddr(),
+     exited:   exited,
+     draining: false,
+   }
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func (s *SMTPService) Shutdown() {
+   s.draining = true
+   s.exited &lt;- 1
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func (s *SMTPService) Addr() *net.TCPAddr {
+   return s.addr
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func (s *SMTPService) SetClientOptions(conn *net.TCPConn) error {
+   if err := conn.SetKeepAlive(false); err != nil {
+     return err
+   }
+   if err := conn.SetLinger(-1); err != nil {
+     return err
+   }
+   return nil
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func (s *SMTPService) Handle(conn *net.TCPConn) {
+   defer conn.Close()
+   if s.draining {
+     conn.Write([]byte("421 Service not available\r\n"))
+     return
+   }
+   session := NewSMTPSession(conn, c.cfg)
+   if verdict := session.Greet(); verdict == Terminate {
+     return
+   }
+   for {
+     if verdict := session.Process(); verdict == Terminate {
+       return
+     }
+   }
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func main() {
+   //...
+   exitChan := make(chan int)
+   signalChan := make(chan os.Signal, 1)
+   go func() {
+     &lt;-signalChan
+     exitChan &lt;- 1
+   }()
+   signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+
+   go RunTCP(NewSMTPService(cfg, exitChan))
+   &lt;-exitChan
+ }</code></pre>
+        </section>
+
+        <section>
+          <div style="text-align:left">
+            <h2>Robust requests</h2>
+          </div>
+        </section>
+        <section>
+          <div style="text-align:left">
+            <h3>Multiple replicas from which to choose</h3>
+            <div class="fragment">
+              <h3>Send request to all</h3>
+            </div>
+            <div class="fragment">
+              <h3>Use first one to respond</h3>
+            </div>
+            <div class="fragment">
+              <h3>Enforce timeout on all of them</h3>
+            </div>
+          </div>
+        </section>
+        <section>
+          <pre><code class="go"> type Replica interface {
+   GetResponse(Request) Response
+ }
+
+ type Client struct {
+   Replicas []Replica
+   Timeout  time.Duration
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func (c *Client) getFirst(req Request) chan Response {
+   r := make(chan Response)
+   for _, replica := range c.Replicas {
+     go func() {
+       r &lt;- replica.GetResponse(req)
+     }()
+   }
+   return r
+ }</code></pre>
+        </section>
+        <section>
+          <pre><code class="go"> func (c *Client) Get(req Request) (Response, error) {
+   r := c.getFirst(req)
+   timeout := time.After(c.Timeout)
+   for {
+     select {
+     case resp := &lt;-r:
+       return resp, nil
+     case &lt;-timeout:
+       return nil, fmt.Errorf("timed out!")
+     }
+   }
+ }</code></pre>
+        </section>
+
+        <section>
+          <h1>Interesting</h1>
+        </section>
+        <section>
+          <div style="text-align:left">
+            <h3><strong>GoCircuit</strong> - distributed goroutines and cross-machine channels (Erlang-style)</h3>
+            <div style="margin-top:4em">
+              <a target="_blank" href="http://www.gocircuit.org/">www.GoCircuit.org</a>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div style="text-align:left">
+            <h3><strong>Donut</strong> - library for building clustered services in Go, patterned after Ordasity</h3>
+            <div style="margin-top:4em">
+              <a target="_blank" href="https://github.com/dforsyth/donut">github.com/dforsyth/donut</a>
+              <a target="_blank" href="https://github.com/boundary/ordasity">github.com/boundary/ordasity</a>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div style="text-align:left">
+            <h3><strong>NSQ</strong> - distributed pub/sub, used by bit.ly</h3>
+            <div style="margin-top:4em">
+              <a target="_blank" href="http://word.bitly.com/post/33232969144/nsq">word.bitly.com/post/33232969144/nsq</a>
+              <a target="_blank" href="https://github.com/bitly/nsq">github.com/bitly/nsq</a>
+            </div>
+          </div>
+        </section>
+
+				<section>
+					<h1>FIN</h1>
+				</section>
+			</div>
+		</div>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+		<script>
+			Reveal.initialize({
+				controls:   false,
+				progress:   true,
+				history:    true,
+				center:     true,
+        loop:       false,
+        keyboard:   true,
+				theme:      Reveal.getQueryHash().theme,
+				transition: Reveal.getQueryHash().transition || 'slide',
+        dependencies: [{
+          src: 'lib/js/classList.js',
+          condition: function() {return !document.body.classList;}
+        }, {
+          src: 'plugin/highlight/highlight.js',
+          async: true,
+          callback: function() {hljs.initHighlightingOnLoad();}
+        }]
+			});
+		</script>
+	</body>
+</html>
+
