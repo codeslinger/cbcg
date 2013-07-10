@@ -2,6 +2,8 @@
 title: "Talks"
 layout: page
 ---
+* [Go forth and Multiply: Concurrency and Communication in Go](/talks/goconctalk/index.html)
+  * 10 Jan 2013 -- [Golang Philly](http://www.meetup.com/GoLangPhilly/)
 * [Gooooo(al)!: Introduction to the Go programming language](/talks/golangpres/index.html)
   * 23 Jan 2013 -- [Philly Lambda](http://groups.google.com/group/philly-lambda)
 * [C.R.E.A.M.: Codd Rules Everything Around Me](/talks/NoSQL-Drexel-2012-08.pdf)
